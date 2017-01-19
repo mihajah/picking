@@ -1,0 +1,19 @@
+div.conteneur_liste_commande{
+	border: 1px solid grey;
+    border-radius: 20px;
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+    padding: 20px;
+}
+
+div.separateur{
+	height: 20px;
+}
+
+span.libelle_commande{
+	font-weight: bold;
+}
+
+a {
+    color: #FFFFFF!important;
+    text-decoration: none;
+}
