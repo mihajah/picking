@@ -1,11 +1,12 @@
 $(document).ready(function(){
+	var buzz = new Audio('files/buzz.wav');
+	var beep = new Audio('files/beep.wav');
 	//Actviter la mask de saisie
-	$(document).on('focusin', 'input.input_code_barre', function(){
+	$(".input_code_barre").on('keyup', function (e) {
+    		if (e.keyCode == 13) {
 		//Forcer la saisie des 13 chiffres
-		$(this).mask("9999999999999",{
-			completed:function(){
 				var EAN_Product = $('input#id_code_barre_hidden').val();
-				var ChiffreSaisie = this.val();
+				var ChiffreSaisie = $('input#id_code_barre').val();
 				var ChiffreSaisieStr = ChiffreSaisie.toString();
 
 				//On compare que les 12 premier digits
@@ -14,7 +15,8 @@ $(document).ready(function(){
 				//Code barre ok
 				if(EAN_Product == EAN_Saisie){
 
-					$.playSound('files/beep');
+					//$.playSound('files/beep');
+					beep.play();
 
 					//Id produit
 					var id_picking = $('input#id_produit_hidden').val();
@@ -65,14 +67,14 @@ $(document).ready(function(){
 			            }
 			        });
 				}else{
-					$.playSound('files/buzz');
+//					var buzz = new Audio('files/buzz.wav');
+					buzz.play();
+					//$.playSound('files/buzz');
 					$(this).val('');
 					$(this).focus();
 				}
 			}
-		});
 	});
-
 
 	$(document).on('click', 'button.ajout_manuel', function(){
 		var ID = $(this).attr('id');

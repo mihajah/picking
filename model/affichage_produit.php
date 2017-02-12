@@ -5,7 +5,7 @@ function products($id){
         $ch = curl_init();
 
         //set url
-        curl_setopt($ch, CURLOPT_URL, "staging.touchiz.fr/ws/products/".$id."");
+        curl_setopt($ch, CURLOPT_URL, "www.touchiz.fr/ws/products/".$id."");
 
         //return the transfer as a string
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

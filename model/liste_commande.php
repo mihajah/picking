@@ -5,7 +5,7 @@ function getOrdersToShip(){
         $ch = curl_init();
 
         //set url
-        curl_setopt($ch, CURLOPT_URL, "staging.touchiz.fr/ws/getOrdersToShip");
+        curl_setopt($ch, CURLOPT_URL, "www.touchiz.fr/ws/getOrdersToShip");
 
         //return the transfer as a string
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
