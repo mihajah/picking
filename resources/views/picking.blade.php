@@ -8,6 +8,7 @@
 		<script src="{{asset('public/js/bootstrap.min.js')}}"></script>
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/jquery.playSound.js')}}"></script>
+		<script src="{{asset('public/js/config.js')}}"></script> 
 	</head>
 	<body>
 		<div class="container">

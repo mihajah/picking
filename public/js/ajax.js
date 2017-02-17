@@ -14,7 +14,7 @@ $(document).ready(function () {
 	
 	//AFFICHAGE DE LA LISTE DES COMMANDES
 	$.ajax({
-            url: "http://staging.touchiz.fr/ws/getOrdersToShip",
+            url: BASE_URL+"/getOrdersToShip",
             type: "GET",
             crossDomain: true,
             dataType: 'json',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 		$('#loading-wrapper').show();
 		console.log(idOrder);
 		$.ajax({
-            url: "http://staging.touchiz.fr/ws/orders/"+idOrder,
+            url: BASE_URL+"/orders/"+idOrder,
             type: "GET",
             crossDomain: true,
             dataType: 'json',
@@ -57,7 +57,7 @@ $(document).ready(function () {
 				//$('#modal').show();
 				$.each(produit,function(index,item){
 					$.ajax({
-						url: "http://www.touchiz.fr/ws/products/"+index,
+						url: BASE_URL+"/products/"+index,
 						type: "GET",
 						crossDomain: true,
 						dataType: 'json',
@@ -89,7 +89,7 @@ $(document).ready(function () {
 		$('#loading-wrapper').show();
 		console.log(idProd);
 		$.ajax({
-			url: "http://www.touchiz.fr/ws/products/"+idProd,
+			url: BASE_URL+"/products/"+idProd,
 			type: "GET", 
 			crossDomain: true,
 			dataType: 'json',
@@ -112,7 +112,7 @@ $(document).ready(function () {
 	if(typeof idOrderAdd !=="undefined"){
 		console.log('ajout prod :'+idOrderAdd);
 		$.ajax({
-            url: "http://staging.touchiz.fr/ws/orders/"+idOrderAdd,
+            url: BASE_URL+"/orders/"+idOrderAdd,
             type: "GET",
             crossDomain: true,
             dataType: 'json',
@@ -201,7 +201,7 @@ $(document).ready(function () {
 		if(counter<produitF.length){
 			$('#qty').val(produitF[counter].qty);
 				$.ajax({
-					url: "http://www.touchiz.fr/ws/products/"+produitF[counter].id,
+					url: BASE_URL+"/products/"+produitF[counter].id,
 					type: "GET",
 					crossDomain: true,
 					dataType: 'json',
@@ -281,7 +281,7 @@ $(document).ready(function () {
 		$('#loading-wrapper').show();
 		
 		$.ajax({
-            url: "http://staging.touchiz.fr/ws/orders/"+idOrderFin,
+            url: BASE_URL+"/orders/"+idOrderFin,
             type: "GET",
             crossDomain: true,
             dataType: 'json',
@@ -295,7 +295,7 @@ $(document).ready(function () {
 				
 				$.each(produit,function(index,item){
 					$.ajax({
-						url: "http://www.touchiz.fr/ws/products/"+index,
+						url: BASE_URL+"/products/"+index,
 						type: "GET",
 						crossDomain: true,
 						dataType: 'json',
@@ -324,7 +324,7 @@ $(document).ready(function () {
 		if(data.length>0){
 		$.each(data,function(index,item){
 			$.ajax({
-				url: "http://www.touchiz.fr/ws/products/"+item.id,
+				url: BASE_URL+"/products/"+item.id,
 				type: "GET",
 				crossDomain: true,
 				dataType: 'json',
