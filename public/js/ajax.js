@@ -38,6 +38,7 @@ $(document).ready(function () {
 
 		//REQUETE POUR AFFICHER LES PRODUITS DE COMMANDE
 	if(typeof idOrder !=="undefined"){
+		var productForCart =[];
 		$('#loading-wrapper').show();
 		console.log(idOrder);
 		$.ajax({
@@ -49,12 +50,8 @@ $(document).ready(function () {
                 var link="listeproduit/";
 				var list="";
 				var produit=[];
-				
-				// list=list+'<tr><td><a href="'+link+response.id+'" style="display:block; width:100%;">'+response.customer.name+'</a></td></tr>';
 				produit=response.cart;
-				// $("#listProd").html(list);
 				console.log(produit);
-				//$('#modal').show();
 				$.each(produit,function(index,item){
 					$.ajax({
 						url: BASE_URL+"/products/"+index,
@@ -62,25 +59,40 @@ $(document).ready(function () {
 						crossDomain: true,
 						dataType: 'json',
 						success: function (response2) {
+						productForCart.push(response2); 
 							var link="detailproduit/";
 							console.log(index);
 							list = list+'<tr><td>'+response2.box+'</td><td><a href="'+link+response2.id+'/'+item+'" >'+response2.name+'</a></td><td>'+item+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
 							$("#listProd").html(list);
 							console.log(produitManquant);
+							 
+						},
+						complete : function(){
+							productForCart.sort(function(a, b){
+								var a1= a.box, b1= b.box;
+								if(a1== b1) return 0;
+								return a1> b1? 1: -1;
+							});
+							console.log(productForCart); 
+		
 						},
 						error: function (xhr, status) { 
 							alert("error");
 						}
 					});
+				
+					
 					
 				});
 				//$('#modal').hide();
+				
 				
             },
             error: function (xhr, status) {
                 alert("error");
             }
         });
+		
 		
 	}
 	
@@ -110,6 +122,7 @@ $(document).ready(function () {
 	//AFFICHAGE PRODUIT POUR PICKING
 	var counter = 0;
 	if(typeof idOrderAdd !=="undefined"){
+		
 		console.log('ajout prod :'+idOrderAdd);
 		$.ajax({
             url: BASE_URL+"/orders/"+idOrderAdd,
@@ -119,23 +132,44 @@ $(document).ready(function () {
             success: function (response) {
                 var link="listeproduit/";
 				var list="";
-				
 				produit=response.cart;
 				
 				$.each(produit,function(index,item){
-					produitF.push({'id':index, 'qty':item});
+					//produitF.push({'id':index, 'qty':item});
+					$.ajax({
+						url: BASE_URL+"/products/"+index,
+						type: "GET",
+						
+						crossDomain: true,
+						dataType: 'json',
+						success: function (response2) {
+							produitF.push({'id':index, 'qty':item,'box':response2.box});
+							produitF.sort(function(a, b){
+											var a1= a.box, b1= b.box;
+											if(a1== b1) return 0;
+											return a1> b1? 1: -1;
+										});
+										console.log('ato ndray');
+						recursive();
+						},
+						error: function (xhr, status,error) { 
+							alert("erreur");
+						}
+					})
 					
 				});
-					
-				//console.log(produitF.length);
-				//console.log(produit[1]);
-				recursive(); 
-				 
+				
             },
             error: function (xhr, status) {
                 alert("error");
             }
-        });
+        }).done(function() {
+						
+						
+						//recursive();
+		});
+		
+		
 		
 	}
 	
@@ -196,8 +230,8 @@ $(document).ready(function () {
 	
 	
 	function recursive(){
-		console.log(produitF);
 		
+		console.log('lasa');
 		if(counter<produitF.length){
 			$('#qty').val(produitF[counter].qty);
 				$.ajax({
@@ -207,7 +241,6 @@ $(document).ready(function () {
 					dataType: 'json',
 					success: function (response2) {
 						//console.log(index);
-					
 						$('#error_msg').hide();
 						$('#imageProdAdd').attr('src',response2.pictures[0]);
 						$('#boxNumberAdd').html(response2.box); 
@@ -217,13 +250,14 @@ $(document).ready(function () {
 						$('#qtyNumbAdd').html(produitF[counter].qty);
 						$('#input_barcode_hidden').val(response2.ean);
 						$('#colorAdd').html(response2.color.alt_name);
-						console.log('test'+countprod);
-						console.log(counter);
+						//console.log('test'+countprod);
+						//console.log(counter);
 						//counter++;
 						$('#input_barcode').val("");
 						$('#input_barcode').focus();
 						//i++;
-						console.log('condition 1',i);
+						//console.log('condition 1',i);
+						
 						
 						
 					},

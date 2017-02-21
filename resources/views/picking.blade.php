@@ -20,7 +20,7 @@
 				<br>
 				<table class="table table-striped">
 					<tr> 
-					<td>Numéro du BOX :</td><td id="boxNumberAdd"></td>
+					<td><h1>Numéro du BOX :</h1></td><td ><h1 id="boxNumberAdd"></h1></td>
 					</tr> 
 					<tr> 
 					<td>Nom du produit :</td><td id="productNameAdd">  </td>
@@ -29,7 +29,7 @@
 					<td>Couleur du produit :</td><td id="colorAdd">  </td>
 					</tr>
 					<tr> 
-					<td>Quantité commandé :</td><td id="qtyNumbAdd">  </td>
+					<td><h2>Quantité commandé :</h2></td><td><h2 id="qtyNumbAdd"> </h2></td>
 					</tr>
 					<tr> 
 					<td>Quantité scanné :</td><td id="qtyscan">  </td> 
