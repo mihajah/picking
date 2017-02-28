@@ -357,6 +357,8 @@ $(document).ready(function () {
 	});
 	
 	$('#manuelMulti').click(function(){
+		countOK = 0;
+		$('#listProdDuplicate').html('');
 		sessionStorage.setItem('count',counter); 
 		counter++;
 		recursive();
@@ -374,6 +376,8 @@ $(document).ready(function () {
 				console.log(produitManquant);
 			}
 		});
+		countOK = 0;
+		$('#listProdDuplicate').html('');
 		counter++;
 		sessionStorage.setItem('count',counter); 
 		recursive();
