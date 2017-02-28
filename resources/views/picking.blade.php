@@ -20,7 +20,7 @@
 				<br>
 				<table class="table table-striped">
 					<tr> 
-					<td><h1>Numéro du BOX :</h1></td><td ><h1 id="boxNumberAdd"></h1></td>
+					<td><h1 style="margin-top:35px;">BOX :</h1></td><td ><h1 style="font-size:85px;"><b  id="boxNumberAdd" ></b></h1></td>
 					</tr> 
 					<tr> 
 					<td>Nom du produit :</td><td id="productNameAdd">  </td>
@@ -29,23 +29,50 @@
 					<td>Couleur du produit :</td><td id="colorAdd">  </td>
 					</tr>
 					<tr> 
-					<td><h2>Quantité commandé :</h2></td><td><h2 id="qtyNumbAdd"> </h2></td>
+					<td><h2>Quantité commandé :</h2></td><td><b><h1 id="qtyNumbAdd"> </h1><b></td>
 					</tr>
-					<tr> 
-					<td>Quantité scanné :</td><td id="qtyscan">  </td> 
-					</tr>
+					
 				</table>
 				<br>
 				<div class="alert alert-danger" id="error_msg" style="display:none">
                           <strong>Erreur!</strong> <span id="error_msg_txt"></span>.
                         </div> 
 				CODE EAN
+				<script>
+				
+				</script>
 				<input type="text" class="form-control" id="input_barcode" autofocus><br> 
 				<input type="hidden" value="" class="form-control" id="input_barcode_hidden"><br> 
 				<input type="hidden" value="" class="form-control" id="qty"><br> 	
-				<input type="hidden" value="1" class="form-control" id="qty2"><br>				
-				<center><button class="btn btn-success" id="manuel">Ajout manuel</button> <button class="btn btn-danger" id="manquant">Produit manquant</button> <a href="{{ URL::previous() }}" class="btn btn-primary">Retour</a></center>
-			</div>   
+				<input type="hidden" value="1" class="form-control" id="qty2"><br>
+				<input type="hidden" value="" class="form-control" id="decompte"><br>				
+				<center><button class="btn btn-success" id="manuel">Ajout manuel</button> <button class="btn btn-danger" id="manquant">Produit manquant</button><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary">Retour</a></center>
+			</div>  
+			
+			</div>
+			<div class="multiple">
+			<center><h1 id="BoxMulti"></h1></center>
+			<table class="table" style="display:hidden">
+			<thead>
+			</thead>
+				<tr>
+				<th>ID </th>
+				<th>Nom du produit </th>
+				<th>Quantité à prendre </th>
+				<th>Collection produit </th>
+				<th>Couleur produit </th>
+				<th>Scanner </th>
+				</tr>
+			</thead>
+			
+			<tbody id="listProdDuplicate">  
+			</tbody>
+			</table>
+			<div class="alert alert-danger" id="error_msg2" style="display:none">
+                          <strong>Erreur!</strong> <span id="error_msg_txt2"></span>.
+                        </div> 
+			<input type="text" class="form-control" id="input_barcodeMultiple" autofocus><br> 
+			<center><button class="btn btn-success" id="manuelMulti">Ajout manuel</button><button class="btn btn-danger" id="manquantMulti">Produit manquant</button><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary">Retour</a></center>
 			</div>
 		</div> 
 		<div id="modal">

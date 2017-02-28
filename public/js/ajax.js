@@ -1,8 +1,23 @@
 var produitManquant =[];  
+var counter = 0;
+var c = sessionStorage.getItem('count'); 
+var decompte = 0;
+var produitF=[]; 
+var produitC=[]; 
+var box=[];
+var prodbox=[];
+console.log('ajout prod :'+c);
+if(c!==null){
+	counter = c;
+}else{
+	counter = 0;
+}	
+
 $(document).ready(function () {
-	var produit=[];
+	var produit=new Array();
 				var produitFinal=[];
-				var produitF=[]; 
+				
+				var test ={};
 				
 				var countprod="";
 				var i = 1;
@@ -59,12 +74,17 @@ $(document).ready(function () {
 						crossDomain: true,
 						dataType: 'json',
 						success: function (response2) {
-						productForCart.push(response2); 
-							var link="detailproduit/";
-							console.log(index);
-							list = list+'<tr><td>'+response2.box+'</td><td><a href="'+link+response2.id+'/'+item+'" >'+response2.name+'</a></td><td>'+item+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
-							$("#listProd").html(list);
-							console.log(produitManquant);
+							if(item == "0"){
+								 
+							}else{
+								productForCart.push(response2); 
+								var link="detailproduit/";
+								console.log(index);
+								list = list+'<tr><td>'+response2.box+'</td><td><a href="'+link+response2.id+'/'+item+'" >'+response2.name+'</a></td><td>'+item+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
+								$("#listProd").html(list);
+								console.log(produitManquant);
+							}
+						
 							 
 						},
 						complete : function(){
@@ -120,10 +140,10 @@ $(document).ready(function () {
 	}
 	
 	//AFFICHAGE PRODUIT POUR PICKING
-	var counter = 0;
+	
 	if(typeof idOrderAdd !=="undefined"){
+		var load = 0;
 		
-		console.log('ajout prod :'+idOrderAdd);
 		$.ajax({
             url: BASE_URL+"/orders/"+idOrderAdd,
             type: "GET",
@@ -133,32 +153,39 @@ $(document).ready(function () {
                 var link="listeproduit/";
 				var list="";
 				produit=response.cart;
-				
+				var cartCount = Object.keys(produit).length;
+				console.log(cartCount);
 				$.each(produit,function(index,item){
 					//produitF.push({'id':index, 'qty':item});
+					load++;
+					// console.log(load);
 					$.ajax({
 						url: BASE_URL+"/products/"+index,
 						type: "GET",
 						
 						crossDomain: true,
 						dataType: 'json',
-						success: function (response2) {
-							produitF.push({'id':index, 'qty':item,'box':response2.box});
-							produitF.sort(function(a, b){
-											var a1= a.box, b1= b.box;
-											if(a1== b1) return 0;
-											return a1> b1? 1: -1;
-										});
-										console.log('ato ndray');
-						recursive();
+						success: function (response2) { 
+							if(item == "0"){
+								 
+							}else{
+							produitF.push({id:index, qty:item,box:response2.box}); 
+							produitC.push({id:index, qty:item,box:response2.box}); 
+							//box.push({num:response2.box});
+							}
 						},
 						error: function (xhr, status,error) { 
-							alert("erreur");
+							alert("erreur dans le each");
 						}
 					})
 					
+										// console.log('ato ndray');
 				});
-				
+				// console.log("arrival");
+				if(load==cartCount){
+					checkPendingRequest();
+			
+				};
             },
             error: function (xhr, status) {
                 alert("error");
@@ -172,6 +199,32 @@ $(document).ready(function () {
 		
 		
 	}
+	
+	
+	
+	 function checkPendingRequest() {
+		if ($.active > 0) {
+			window.setTimeout(checkPendingRequest, 1000);
+			console.log("ajax en cours");
+			$('#loading-wrapper').show();
+		}
+		else {
+			$('#loading-wrapper').hide();
+			console.log(produitF.length);
+			produitF.sort(function(a, b){
+											var a1= a.box, b1= b.box;
+											return a1 - b1;
+										});
+										console.log('sort finish');
+			produitC.sort(function(a, b){
+											var a1= a.box, b1= b.box;
+											return a1 - b1;
+										});
+										console.log('sort finish');
+			//produitC.push(produitF);
+			recursive();
+		}
+	};
 	
 	//TEST DU INPUT BARCODE
 	$('#input_barcode').keyup(function(){
@@ -197,6 +250,7 @@ $(document).ready(function () {
 					var test2 = $('#qty2').val();
 					if(test==test2){
 						counter++;
+						sessionStorage.setItem('count',counter); 
 						$('#qty2').val(1);
 						$('#qtyscan').html(1);
 						recursive(); 
@@ -204,6 +258,7 @@ $(document).ready(function () {
 						console.log('condition 2');
 						var res = parseInt(test2);
 						res = res+1;
+						produitC[counter].qty--;
 						$('#qty2').val(res);
 						$('#qtyscan').html(res);
 						recursive(); 
@@ -227,27 +282,204 @@ $(document).ready(function () {
 		
 		console.log(count); 
 	});
+
+	//MULTISCAN
+	var countOK = 0;
+	$('#input_barcodeMultiple').keyup(function(){
+		console.log("keyup");
+		var $item = $("tr").find('#scan');
+		//console.log("items" +$item.value);  
+		var countItem = $item.length;
+		console.log('nombre item '+countItem);
+		var countBuzz = 0;
+		$.each($item, function(key, value){
+			var barcodeInput=$('#input_barcodeMultiple').val();
+			var count = barcodeInput.length;
+			if(barcodeInput.match(/^\d+$/)){
+				if(count<"13"){
+					$('#error_msg2').show();
+					$('#error_msg_txt2').html('Le code EAN est composé de 13 chiffres'); 
+				}else {
+					var barcodeInputHidden=$(value).text();
+					var barcodeString = barcodeInput.toString();
+					var barcodeFinal = barcodeString.substring(0,12);
+					console.log(barcodeInputHidden);
+					console.log('introduit :'+barcodeInput);
+					if(barcodeFinal == barcodeInputHidden){
+						var beep = new Audio(sound+'/beep.mp3');
+						beep.play();
+						var id = $(this).attr('data-id-line');
+						var qty = $('#qtyMulti_'+id).html();
+						console.log(qty);
+						var qtyInt = parseInt(qty);
+						if(qtyInt>1){
+							qtyInt--;
+							
+							$('#qtyMulti_'+id).html(qtyInt);
+							$('#input_barcodeMultiple').val("");
+						}else{
+							$(value).text("OK");
+							$(value).css("background-color","green");
+							$(value).css("text-align","center");
+							$('#error_msg2').hide();
+							$('#input_barcodeMultiple').val("");
+							$('#qtyMulti_'+id).html(0); 
+							countOK++;
+						}
+						
+						
+						//counter++;
+						console.log(countOK); 
+						if(countOK==countItem){ 
+							$('#listProdDuplicate').html('');
+							countOK = 0; 
+							recursive();
+						}
+						
+					}
+					else{
+						countBuzz++;
+						if(countBuzz==countItem){
+							var buzz = new Audio(sound+'/buzz.mp3');
+							buzz.play();
+							$('#error_msg2').show();
+							$('#error_msg_txt2').html('Code EAN erroné');
+							setTimeout(function(){ $('#input_barcodeMultiple').val(''); }, 2000);
+						}
+						
+						
+					}
+				}
+				
+			}
+			
+		})
+	});
 	
+	$('#manuelMulti').click(function(){
+		sessionStorage.setItem('count',counter); 
+		counter++;
+		recursive();
+	});
 	
+	$('#manquantMulti').click(function(){
+		var $item = $("tr").find('#scan');
+		$.each($item, function(key, value){
+			if($(this).html()=="OK"){
+				
+			}else{
+				var id = $(this).attr('data-id-line');
+				var qty = $('#qtyMulti_'+id).html();
+				produitManquant.push({'id':id,'qty':qty});
+				console.log(produitManquant);
+			}
+		});
+		counter++;
+		sessionStorage.setItem('count',counter); 
+		recursive();
+		$('#loading-wrapper').show();
+		setTimeout(function(){ $('#loading-wrapper').hide(); }, 2000);
+		
+	});
+	//FONCTION RECURSIVE
 	function recursive(){
 		
 		console.log('lasa');
-		if(counter<produitF.length){
+		if(counter< produitF.length){
 			$('#qty').val(produitF[counter].qty);
+				
 				$.ajax({
 					url: BASE_URL+"/products/"+produitF[counter].id,
 					type: "GET",
 					crossDomain: true,
 					dataType: 'json',
 					success: function (response2) {
-						//console.log(index);
+						var test =counter+1; 
+						if(typeof produitF[test]!=="undefined"){
+							console.log('ato');
+							if(produitF[test].box==response2.box){
+								console.log('nakato');
+								var boxis = response2.box;
+								$('.jumbotron').hide();
+								$.each(produitF,function(index,item){
+									$.ajax({
+										url: BASE_URL+"/products/"+item.id,
+										type: "GET",
+										crossDomain: true,
+										dataType: 'json',
+										success: function(response3){
+											var list = "";
+											$('#BoxMulti').html('BOX : '+boxis);
+											if(response3.box==boxis){
+												$('.multiple').show();
+												console.log("misy produit");
+												list =list+"<tr><td>"+response3.id+"</td><td>"+response3.name+"</td><td id='qtyMulti_"+response3.id+"'>"+item.qty+"</td><td>"+response3.collection.alt_name+"</td><td>"+response3.color.alt_name+"</td><td id='scan' data-id-line='"+response3.id+"'>"+response3.ean+"</td ></tr>"; 
+												$('#listProdDuplicate').append(list);
+												counter++;
+											}
+										},error: function(xhr,status){
+											
+										}
+										});
+									console.log("tonga ato amle each");
+								});
+							}else{
+								console.log('ato ndray');
+								$('#error_msg').hide();
+								$('#imageProdAdd').attr('src',response2.pictures[0]);
+								$('#boxNumberAdd').html(produitF[counter].box); 
+								  
+								$('#productNameAdd').html(response2.name);
+								$('#decompte').val(produitF[counter].qty);
+								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
+								 
+								
+								$('#input_barcode_hidden').val(response2.ean);
+								$('#colorAdd').html(response2.color.alt_name);
+								//console.log('test'+countprod);
+								//console.log(counter);
+								//counter++;
+								$('#input_barcode').val("");
+								$('#input_barcode').focus();
+								$('.multiple').hide();
+								$('.jumbotron').show();
+								//i++;
+								//console.log('condition 1',i);
+							}
+						}else{
+							console.log('ato ndray ko');
+							$('#error_msg').hide();
+								$('#imageProdAdd').attr('src',response2.pictures[0]);
+								$('#boxNumberAdd').html(produitF[counter].box); 
+								  
+								$('#productNameAdd').html(response2.name);
+								$('#decompte').val(produitF[counter].qty);
+								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
+								 
+								
+								$('#input_barcode_hidden').val(response2.ean);
+								$('#colorAdd').html(response2.color.alt_name);
+								//console.log('test'+countprod);
+								//console.log(counter);
+								//counter++;
+								$('#input_barcode').val("");
+								$('#input_barcode').focus();
+								$('.multiple').hide();
+								$('.jumbotron').show();
+								//i++;
+								//console.log('condition 1',i);
+						}
+						
+						/*
 						$('#error_msg').hide();
 						$('#imageProdAdd').attr('src',response2.pictures[0]);
-						$('#boxNumberAdd').html(response2.box); 
+						$('#boxNumberAdd').html(produitF[counter].box); 
 						  
 						$('#productNameAdd').html(response2.name);
+						$('#decompte').val(produitF[counter].qty);
+						$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
+						 
 						
-						$('#qtyNumbAdd').html(produitF[counter].qty);
 						$('#input_barcode_hidden').val(response2.ean);
 						$('#colorAdd').html(response2.color.alt_name);
 						//console.log('test'+countprod);
@@ -258,7 +490,7 @@ $(document).ready(function () {
 						//i++;
 						//console.log('condition 1',i);
 						
-						
+						*/
 						
 					},
 					error: function (xhr, status) { 
@@ -266,6 +498,9 @@ $(document).ready(function () {
 					}
 				});
 			
+			
+			
+
 			
 		}else{
 			var JSONmanquant= JSON.stringify(produitManquant);
@@ -279,6 +514,7 @@ $(document).ready(function () {
 		var test2 = $('#qty2').val();
 		if(test==test2){
 			counter++;
+			sessionStorage.setItem('count',counter); 
 			$('#qty2').val(1);
 			$('#qtyscan').html(1);
 			recursive(); 
@@ -286,6 +522,7 @@ $(document).ready(function () {
 			console.log('condition 2');
 			var res = parseInt(test2);
 			res = res+1;
+			produitC[counter].qty--; 
 			$('#qty2').val(res);
 			$('#qtyscan').html(res);
 			recursive(); 
@@ -298,6 +535,7 @@ $(document).ready(function () {
 		produitManquant.push({'id':produitF[counter].id,'qty':produitF[counter].qty});
 		console.log(produitManquant);
 		counter++;
+		sessionStorage.setItem('count',counter); 
 		recursive();
 		$('#loading-wrapper').show();
 		setTimeout(function(){ $('#loading-wrapper').hide(); }, 2000);
@@ -312,6 +550,7 @@ $(document).ready(function () {
 		console.log(produitManquant);
 		
 		
+		
 		$('#loading-wrapper').show();
 		
 		$.ajax({
@@ -324,7 +563,7 @@ $(document).ready(function () {
 				var list="";
 				var produit=[];
 				produit=response.cart;
-				
+				$('#societyName').html(response.customer.name);
 				console.log(produit);
 				
 				$.each(produit,function(index,item){
@@ -336,7 +575,7 @@ $(document).ready(function () {
 						success: function (response2) {
 							var link="detailproduit/";
 							console.log(index);
-							list = list+'<tr><td>'+response2.box+'</td><td>'+response2.name+'</td><td>'+item+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
+							list = list+'<tr class="success"><td>'+response2.box+'</td><td>'+response2.name+'</td><td>'+item+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
 							$("#listProd").html(list);
 							console.log(produitManquant);
 						},
@@ -365,7 +604,7 @@ $(document).ready(function () {
 				success: function (response2) {
 					var link="detailproduit/";
 					console.log(item.id);
-					list = list+'<tr><td>'+response2.box+'</td><td>'+response2.name+'</td><td>'+item.qty+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
+					list = list+'<tr class="danger"><td>'+response2.box+'</td><td>'+response2.name+'</td><td>'+item.qty+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
 					$("#listProd2").html(list);
 					console.log(produitManquant);
 				},
