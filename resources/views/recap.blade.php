@@ -11,26 +11,16 @@
 	</head>
 	<body>
 		<div class="container">
-		<div class="row">
-			<center><h1>Récapitulatif de la commande</h1></center>
-			<table class="table table-hover">
-			<thead>
-			</thead>
-				<tr>
-				<th>Numéro de box </th>
-				<th>Nom du produit </th>
-				<th>Quantité à prendre </th>
-				<th>Quantité en stock </th>
-				<th>Collection produit </th>
-				<th>Couleur produit </th>
-				<th>Id du produit </th>
-				</tr>
-			</thead>
+		<div class="row"><br>
 			
-			<tbody id="listProd">  
-			</tbody>
-			</table>
-			<center><h1>Produit(s) manquant(s)</h1></center>
+			<div class="jumbotron">
+			<center>
+			<h1 id="societyName"></h1>
+			<h1 id="numCom">Numéro de commande : {{ $id }}</h1>
+			</center>
+			</div>
+			<center><h2>Récapitulatif de la commande</h2></center>
+			<center><h3>Produit(s) manquant(s)</h3></center>
 			<table class="table table-hover">
 			<thead>
 			</thead>
@@ -47,7 +37,26 @@
 			
 			<tbody id="listProd2">  
 			</tbody>
+			</table> 
+			<center ><h3 class="success">Produit(s) validé(s)</h3></center>
+			<table class="table">
+			<thead>
+			</thead>
+				<tr>
+				<th>Numéro de box </th>
+				<th>Nom du produit </th>
+				<th>Quantité à prendre </th>
+				<th>Quantité en stock </th>
+				<th>Collection produit </th>
+				<th>Couleur produit </th>
+				<th>Id du produit </th>
+				</tr>
+			</thead>
+			
+			<tbody id="listProd">  
+			</tbody>
 			</table>
+			
 			<center><button class="btn btn-success" id="terminus">OK</button></center> 
 			</div>
 		</div> 
