@@ -1,3 +1,4 @@
+<!DOCTYPE html> 
 <html>
 	<head>
 		<title>Picking</title>
@@ -72,7 +73,7 @@
                           <strong>Erreur!</strong> <span id="error_msg_txt2"></span>.
                         </div> 
 			<input type="text" class="form-control" id="input_barcodeMultiple" autofocus><br> 
-			<center><button class="btn btn-success" id="manuelMulti">Ajout manuel</button><button class="btn btn-danger" id="manquantMulti">Produit manquant</button><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary">Retour</a></center>
+			<center><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary">Retour</a></center>
 			</div>
 		</div> 
 		<div id="modal">
@@ -82,11 +83,79 @@
 		  <div id="loading-text">Traitement</div>
 		  <div id="loading-content"></div>
 		</div>
-	<script>    	
+	<script type="text/javascript">    	
 		var idOrderAdd="<?php echo $id ?>";   
 		var sound ="{{asset('public/sound/')}}";
 		var home ="{{route('home')}}";
-		var recap = "{{route('recap',['id'=>$id]) }}"
+		var recap = "{{route('recap',['id'=>$id]) }}";
+		var countOK = 0;
+		var counter = 0;
+		var produitManquant =[];
+		
+		function ajoutMulti(id,qty){ 
+			countOK++;
+			console.log(id+'qty'+qty);
+			var scan = $('#qtyMulti_'+id).closest("tr").find('#scan');
+			
+			// $('#qtyMulti_'+id).text(0);
+			var nbItem = parseInt($('#qtyMulti_'+id).text());
+			if(nbItem>0){
+				nbItem--;
+				$('#qtyMulti_'+id).text(nbItem);
+				if(nbItem==0){
+					scan.text('OK');
+					scan.css("background-color","#fff000");
+					scan.css("text-align","center");
+				}
+			}else{
+				
+			}
+			
+			var $item = $("tr").find('#scan');
+			var x = 0;
+			var countItem = $item.length;
+			$.each($item, function(key, value){
+				if($(value).text() == "OK"){
+					x++;
+				}
+			});
+			
+			if(x == countItem){
+				// alert("tapitra");
+				countOK = 0 ;
+				counter++;
+				$('#listProdDuplicate').html('');
+				recursive();
+			}
+			
+			//var qty =
+			
+		}
+		
+		function manquantMulti(id,qty){
+			countOK++;
+			produitManquant.push({'id':id,'qty':qty});
+			var scan = $('#qtyMulti_'+id).closest("tr").find('#scan');
+			scan.text('OK');
+			scan.css("background-color","red");
+			scan.css("text-align","center");
+			$('#qtyMulti_'+id).text(0);
+			var $item = $("tr").find('#scan');
+			var x = 0;
+			var countItem = $item.length;
+			$.each($item, function(key, value){
+				if($(value).text() == "OK"){
+					x++;
+				}
+			});
+			if(x == countItem){
+				// alert("tapitra");
+				countOK = 0 ;
+				counter++;
+				$('#listProdDuplicate').html('');
+				recursive();
+			}
+		}
 	</script>
 	</body> 
 </html> 

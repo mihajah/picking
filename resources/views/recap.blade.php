@@ -27,7 +27,7 @@
 				<tr>
 				<th>Numéro de box </th>
 				<th>Nom du produit </th>
-				<th>Quantité à prendre </th>
+				<th>Quantité manquante </th>
 				<th>Quantité en stock </th>
 				<th>Collection produit </th>
 				<th>Couleur produit </th>
@@ -45,7 +45,7 @@
 				<tr>
 				<th>Numéro de box </th>
 				<th>Nom du produit </th>
-				<th>Quantité à prendre </th>
+				<th>Quantité prise </th>
 				<th>Quantité en stock </th>
 				<th>Collection produit </th>
 				<th>Couleur produit </th>

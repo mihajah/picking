@@ -1,11 +1,143 @@
 var produitManquant =[];  
-var counter = 0;
+
 var c = sessionStorage.getItem('count'); 
 var decompte = 0;
 var produitF=[]; 
 var produitC=[]; 
 var box=[];
 var prodbox=[];
+var prodValid=[];
+
+
+
+function recursive(){
+		
+		console.log('lasa');
+		if(counter< produitF.length){
+			$('#qty').val(produitF[counter].qty);
+				
+				$.ajax({
+					url: BASE_URL+"/products/"+produitF[counter].id,
+					type: "GET",
+					crossDomain: true,
+					dataType: 'json',
+					success: function (response2) {
+						var test =counter+1; 
+						if(typeof produitF[test]!=="undefined"){
+							console.log('ato');
+							if(produitF[test].box==response2.box){
+								console.log('nakato');
+								var boxis = response2.box;
+								$('.jumbotron').hide();
+								$.each(produitF,function(index,item){
+									$.ajax({
+										url: BASE_URL+"/products/"+item.id,
+										type: "GET",
+										crossDomain: true,
+										dataType: 'json',
+										success: function(response3){
+											var list = "";
+											$('#BoxMulti').html('BOX : '+boxis);
+											if(response3.box==boxis){
+												$('.multiple').show();
+												console.log("misy produit");
+												list =list+"<tr><td>"+response3.id+"</td><td>"+response3.name+"</td><td id='qtyMulti_"+response3.id+"'>"+item.qty+"</td><td>"+response3.collection.alt_name+"</td><td>"+response3.color.alt_name+"</td><td id='scan' class='test' data-id-line='"+response3.id+"'>"+response3.ean+"</td ><td><button class='btn btn-success' id='manuelMulti' onclick='ajoutMulti("+response3.id+","+item.qty+")'>Ajout manuel</button></td><td><button class='btn btn-danger' id='manquantMulti' onclick='manquantMulti("+response3.id+","+item.qty+")'>Produit manquant</button></td></tr>"; 
+												$('#listProdDuplicate').append(list);
+												counter++;
+											}
+										},error: function(xhr,status){
+											
+										}
+										});
+									console.log("tonga ato amle each"); 
+								});
+							}else{
+								console.log('ato ndray');
+								$('#error_msg').hide();
+								$('#imageProdAdd').attr('src',response2.pictures[0]);
+								$('#boxNumberAdd').html(produitF[counter].box); 
+								  
+								$('#productNameAdd').html(response2.name);
+								$('#decompte').val(produitF[counter].qty);
+								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
+								 
+								
+								$('#input_barcode_hidden').val(response2.ean);
+								$('#colorAdd').html(response2.color.alt_name);
+								//console.log('test'+countprod);
+								//console.log(counter);
+								//counter++;
+								$('#input_barcode').val("");
+								$('#input_barcode').focus();
+								$('.multiple').hide();
+								$('.jumbotron').show();
+								//i++;
+								//console.log('condition 1',i);
+							}
+						}else{
+							console.log('ato ndray ko');
+							$('#error_msg').hide();
+								$('#imageProdAdd').attr('src',response2.pictures[0]);
+								$('#boxNumberAdd').html(produitF[counter].box); 
+								  
+								$('#productNameAdd').html(response2.name);
+								$('#decompte').val(produitF[counter].qty);
+								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
+								 
+								
+								$('#input_barcode_hidden').val(response2.ean);
+								$('#colorAdd').html(response2.color.alt_name);
+								//console.log('test'+countprod);
+								//console.log(counter);
+								//counter++;
+								$('#input_barcode').val("");
+								$('#input_barcode').focus();
+								$('.multiple').hide();
+								$('.jumbotron').show();
+								//i++;
+								//console.log('condition 1',i);
+						}
+						
+						/*
+						$('#error_msg').hide();
+						$('#imageProdAdd').attr('src',response2.pictures[0]);
+						$('#boxNumberAdd').html(produitF[counter].box); 
+						  
+						$('#productNameAdd').html(response2.name);
+						$('#decompte').val(produitF[counter].qty);
+						$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
+						 
+						
+						$('#input_barcode_hidden').val(response2.ean);
+						$('#colorAdd').html(response2.color.alt_name);
+						//console.log('test'+countprod);
+						//console.log(counter);
+						//counter++;
+						$('#input_barcode').val("");
+						$('#input_barcode').focus();
+						//i++;
+						//console.log('condition 1',i);
+						
+						*/
+						
+					},
+					error: function (xhr, status) { 
+						alert("error");
+					}
+				});
+			
+			
+			
+
+			
+		}else{
+			var JSONmanquant= JSON.stringify(produitManquant);
+			sessionStorage.setItem('pManquant',JSONmanquant); 
+			window.location = recap;
+		}
+	}
+
+
 console.log('ajout prod :'+c);
 if(c!==null){
 	counter = c;
@@ -15,17 +147,17 @@ if(c!==null){
 
 $(document).ready(function () {
 	var produit=new Array();
-				var produitFinal=[];
-				
-				var test ={};
-				
-				var countprod="";
-				var i = 1;
-				var qtyTemp = 0;
+	var produitFinal=[];
+	
+	var test ={};
+	
+	var countprod="";
+	var i = 1;
+	var qtyTemp = 0;
 	
 	console.log('initialiser');  
 	$('#modal').hide();
-	$('#loading-wrapper').show();
+	//$('#loading-wrapper').show();
 	
 	//AFFICHAGE DE LA LISTE DES COMMANDES
 	$.ajax({
@@ -36,7 +168,7 @@ $(document).ready(function () {
             success: function (response) {
                 var link="listeproduit/";
 				var list="";
-				
+				response
 				$.each(response, function (index, item) {
 					$('#loading-wrapper').show();
 					list=list+'<tr><td><a href="'+link+item.id+'" style="display:block; width:100%;">'+item.customer.name+'</a></td></tr>';
@@ -54,7 +186,8 @@ $(document).ready(function () {
 		//REQUETE POUR AFFICHER LES PRODUITS DE COMMANDE
 	if(typeof idOrder !=="undefined"){
 		var productForCart =[];
-		$('#loading-wrapper').show();
+		var produit=[];
+		var prodSort = [];
 		console.log(idOrder);
 		$.ajax({
             url: BASE_URL+"/orders/"+idOrder,
@@ -62,59 +195,64 @@ $(document).ready(function () {
             crossDomain: true,
             dataType: 'json',
             success: function (response) {
+				$('#loading-wrapper').show();
                 var link="listeproduit/";
 				var list="";
-				var produit=[];
 				produit=response.cart;
-				console.log(produit);
-				$.each(produit,function(index,item){
+				var x = 0;
+				Object.keys(produit).sort().forEach(function(key) {
+				  prodSort = produit;
+				  x++;
+				});
+				console.log(prodSort);
+				var y = 0;
+				$.each(prodSort,function(index,item){
 					$.ajax({
 						url: BASE_URL+"/products/"+index,
 						type: "GET",
 						crossDomain: true,
 						dataType: 'json',
-						success: function (response2) {
+						success: function (response2) { 
+							if($.active>0){
+								$('#loading-wrapper').show();
+							}
 							if(item == "0"){
-								 
+								y++; 
 							}else{
+								response2.itemNb = item;
 								productForCart.push(response2); 
 								var link="detailproduit/";
 								console.log(index);
-								list = list+'<tr><td>'+response2.box+'</td><td><a href="'+link+response2.id+'/'+item+'" >'+response2.name+'</a></td><td>'+item+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
-								$("#listProd").html(list);
-								console.log(produitManquant);
-							}
-						
-							 
-						},
-						complete : function(){
-							productForCart.sort(function(a, b){
-								var a1= a.box, b1= b.box;
-								if(a1== b1) return 0;
-								return a1> b1? 1: -1;
-							});
-							console.log(productForCart); 
-		
+								console.log(produitManquant);	
+								y++;
+								if(y==x){
+									console.log("test");
+									productForCart.sort(function(a, b){
+											var a1= a.box, b1= b.box;
+											return a1 - b1;
+										});
+									$.each(productForCart,function(index,item){
+										list = list+'<tr><td>'+item.box+'</td><td><a href="'+link+item.id+'/'+item.itemNb+'" >'+item.name+'</a></td><td>'+item.itemNb+'</td><td>'+item.quantity+'</td><td>'+item.collection.name+'</td><td>'+item.color.alt_name+'</td><td>'+item.id+'</td></tr>';
+										$("#listProd").html(list);
+										$('#loading-wrapper').hide(); 
+									});	
+								}
+							}	 
 						},
 						error: function (xhr, status) { 
 							alert("error");
 						}
 					});
-				
-					
-					
 				});
-				//$('#modal').hide();
-				
-				
             },
             error: function (xhr, status) {
                 alert("error");
             }
         });
 		
-		
 	}
+	
+	
 	
 	//AFFICHAGE PRODUIT 
 	if(typeof idProd !=="undefined"){
@@ -143,7 +281,6 @@ $(document).ready(function () {
 	
 	if(typeof idOrderAdd !=="undefined"){
 		var load = 0;
-		
 		$.ajax({
             url: BASE_URL+"/orders/"+idOrderAdd,
             type: "GET",
@@ -169,7 +306,7 @@ $(document).ready(function () {
 							if(item == "0"){
 								 
 							}else{
-							produitF.push({id:index, qty:item,box:response2.box}); 
+							produitF.push({id:index, qty:item,box:response2.box,qtyF:0}); 
 							produitC.push({id:index, qty:item,box:response2.box}); 
 							//box.push({num:response2.box});
 							}
@@ -259,6 +396,7 @@ $(document).ready(function () {
 						var res = parseInt(test2);
 						res = res+1;
 						produitC[counter].qty--;
+						produitF[counter].qtyF++; 
 						$('#qty2').val(res);
 						$('#qtyscan').html(res);
 						recursive(); 
@@ -284,7 +422,7 @@ $(document).ready(function () {
 	});
 
 	//MULTISCAN
-	var countOK = 0;
+	
 	$('#input_barcodeMultiple').keyup(function(){
 		console.log("keyup");
 		var $item = $("tr").find('#scan');
@@ -306,7 +444,7 @@ $(document).ready(function () {
 					console.log(barcodeInputHidden);
 					console.log('introduit :'+barcodeInput);
 					if(barcodeFinal == barcodeInputHidden){
-						var beep = new Audio(sound+'/beep.mp3');
+						var beep = new Audio(sound+'/beep.mp3'); 
 						beep.play();
 						var id = $(this).attr('data-id-line');
 						var qty = $('#qtyMulti_'+id).html();
@@ -356,167 +494,16 @@ $(document).ready(function () {
 		})
 	});
 	
-	$('#manuelMulti').click(function(){
-		countOK = 0;
-		$('#listProdDuplicate').html('');
-		sessionStorage.setItem('count',counter); 
-		counter++;
-		recursive();
-	});
 	
-	$('#manquantMulti').click(function(){
-		var $item = $("tr").find('#scan');
-		$.each($item, function(key, value){
-			if($(this).html()=="OK"){
-				
-			}else{
-				var id = $(this).attr('data-id-line');
-				var qty = $('#qtyMulti_'+id).html();
-				produitManquant.push({'id':id,'qty':qty});
-				console.log(produitManquant);
-			}
-		});
-		countOK = 0;
-		$('#listProdDuplicate').html('');
-		counter++;
-		sessionStorage.setItem('count',counter); 
-		recursive();
-		$('#loading-wrapper').show();
-		setTimeout(function(){ $('#loading-wrapper').hide(); }, 2000);
-		
-	});
 	//FONCTION RECURSIVE
-	function recursive(){
-		
-		console.log('lasa');
-		if(counter< produitF.length){
-			$('#qty').val(produitF[counter].qty);
-				
-				$.ajax({
-					url: BASE_URL+"/products/"+produitF[counter].id,
-					type: "GET",
-					crossDomain: true,
-					dataType: 'json',
-					success: function (response2) {
-						var test =counter+1; 
-						if(typeof produitF[test]!=="undefined"){
-							console.log('ato');
-							if(produitF[test].box==response2.box){
-								console.log('nakato');
-								var boxis = response2.box;
-								$('.jumbotron').hide();
-								$.each(produitF,function(index,item){
-									$.ajax({
-										url: BASE_URL+"/products/"+item.id,
-										type: "GET",
-										crossDomain: true,
-										dataType: 'json',
-										success: function(response3){
-											var list = "";
-											$('#BoxMulti').html('BOX : '+boxis);
-											if(response3.box==boxis){
-												$('.multiple').show();
-												console.log("misy produit");
-												list =list+"<tr><td>"+response3.id+"</td><td>"+response3.name+"</td><td id='qtyMulti_"+response3.id+"'>"+item.qty+"</td><td>"+response3.collection.alt_name+"</td><td>"+response3.color.alt_name+"</td><td id='scan' data-id-line='"+response3.id+"'>"+response3.ean+"</td ></tr>"; 
-												$('#listProdDuplicate').append(list);
-												counter++;
-											}
-										},error: function(xhr,status){
-											
-										}
-										});
-									console.log("tonga ato amle each");
-								});
-							}else{
-								console.log('ato ndray');
-								$('#error_msg').hide();
-								$('#imageProdAdd').attr('src',response2.pictures[0]);
-								$('#boxNumberAdd').html(produitF[counter].box); 
-								  
-								$('#productNameAdd').html(response2.name);
-								$('#decompte').val(produitF[counter].qty);
-								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
-								 
-								
-								$('#input_barcode_hidden').val(response2.ean);
-								$('#colorAdd').html(response2.color.alt_name);
-								//console.log('test'+countprod);
-								//console.log(counter);
-								//counter++;
-								$('#input_barcode').val("");
-								$('#input_barcode').focus();
-								$('.multiple').hide();
-								$('.jumbotron').show();
-								//i++;
-								//console.log('condition 1',i);
-							}
-						}else{
-							console.log('ato ndray ko');
-							$('#error_msg').hide();
-								$('#imageProdAdd').attr('src',response2.pictures[0]);
-								$('#boxNumberAdd').html(produitF[counter].box); 
-								  
-								$('#productNameAdd').html(response2.name);
-								$('#decompte').val(produitF[counter].qty);
-								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
-								 
-								
-								$('#input_barcode_hidden').val(response2.ean);
-								$('#colorAdd').html(response2.color.alt_name);
-								//console.log('test'+countprod);
-								//console.log(counter);
-								//counter++;
-								$('#input_barcode').val("");
-								$('#input_barcode').focus();
-								$('.multiple').hide();
-								$('.jumbotron').show();
-								//i++;
-								//console.log('condition 1',i);
-						}
-						
-						/*
-						$('#error_msg').hide();
-						$('#imageProdAdd').attr('src',response2.pictures[0]);
-						$('#boxNumberAdd').html(produitF[counter].box); 
-						  
-						$('#productNameAdd').html(response2.name);
-						$('#decompte').val(produitF[counter].qty);
-						$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
-						 
-						
-						$('#input_barcode_hidden').val(response2.ean);
-						$('#colorAdd').html(response2.color.alt_name);
-						//console.log('test'+countprod);
-						//console.log(counter);
-						//counter++;
-						$('#input_barcode').val("");
-						$('#input_barcode').focus();
-						//i++;
-						//console.log('condition 1',i);
-						
-						*/
-						
-					},
-					error: function (xhr, status) { 
-						alert("error");
-					}
-				});
-			
-			
-			
-
-			
-		}else{
-			var JSONmanquant= JSON.stringify(produitManquant);
-			sessionStorage.setItem('pManquant',JSONmanquant); 
-			window.location = recap;
-		}
-	}
+	
 	
 	$('#manuel').click(function(){
 		var test = $('#qty').val();
 		var test2 = $('#qty2').val();
+		console.log(test);
 		if(test==test2){
+			console.log(res);
 			counter++;
 			sessionStorage.setItem('count',counter); 
 			$('#qty2').val(1);
@@ -527,6 +514,7 @@ $(document).ready(function () {
 			var res = parseInt(test2);
 			res = res+1;
 			produitC[counter].qty--; 
+			produitF[counter].qtyF++; 
 			$('#qty2').val(res);
 			$('#qtyscan').html(res);
 			recursive(); 
@@ -536,27 +524,29 @@ $(document).ready(function () {
 	});
 	
 	$('#manquant').click(function(){
-		produitManquant.push({'id':produitF[counter].id,'qty':produitF[counter].qty});
+		produitManquant.push({'id':produitF[counter].id,'qty':produitC[counter].qty});
 		console.log(produitManquant);
 		counter++;
 		sessionStorage.setItem('count',counter); 
-		recursive();
+		$('#qty2').val(1);
+		recursive();  
 		$('#loading-wrapper').show();
 		setTimeout(function(){ $('#loading-wrapper').hide(); }, 2000);
-	});
+	});  
 	
 	//AFFICHAGE PRODUIT MANQUANT
 	if(typeof idOrderFin !== "undefined"){
 		var pManquantJSON = sessionStorage.getItem('pManquant'); 
 		var data = JSON.parse(pManquantJSON);
 		var list ="";
+		var list1 = "";
 		console.log(data);
 		console.log(produitManquant);
 		
 		
 		
 		$('#loading-wrapper').show();
-		
+		/*
 		$.ajax({
             url: BASE_URL+"/orders/"+idOrderFin,
             type: "GET",
@@ -596,7 +586,9 @@ $(document).ready(function () {
                 alert("error");
             }
         });
-		
+		*/
+		var x = 0;
+		var y = data.length;
 		
 		if(data.length>0){
 		$.each(data,function(index,item){
@@ -611,6 +603,29 @@ $(document).ready(function () {
 					list = list+'<tr class="danger"><td>'+response2.box+'</td><td>'+response2.name+'</td><td>'+item.qty+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
 					$("#listProd2").html(list);
 					console.log(produitManquant);
+					x++;
+					if(x==y){
+						console.log(produitF);
+						$.each(produitF,function(index2,item2){
+							console.log('finale');
+							$.ajax({
+								url: BASE_URL+"/products/"+item2.id,
+								type: "GET",
+								crossDomain: true,
+								dataType: 'json',
+								success: function (response) {
+									var link="detailproduit/";
+									console.log(item.id);
+									list1 = list1+'<tr class="danger"><td>'+response.box+'</td><td>'+response.name+'</td><td>'+item2.qtyF+'</td><td>'+response.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response.color.alt_name+'</td><td>'+response.id+'</td></tr>';
+									$("#listProd2").html(list1);
+									console.log(produitManquant);
+								},
+								error: function (xhr, status) { 
+									alert("error");
+								}
+							});
+						});
+					}
 				},
 				error: function (xhr, status) { 
 					alert("error");
