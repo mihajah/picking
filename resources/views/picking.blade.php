@@ -11,6 +11,12 @@
 		<script src="{{asset('public/js/jquery.playSound.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
 	</head>
+	<!-- debut menu -->
+		<div id="tcz_header_commun_menu"/>
+	<!-- fin menu -->
+			
+	<?php include("./../header_commun/header.php") ?>
+    <?php Common_Header::forApp('Picking TechTablet') ?>
 	<body>
 		<div class="container">
 			<center><h1>Produit à prendre dans la liste</h1></center>
