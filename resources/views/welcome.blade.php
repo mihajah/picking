@@ -9,6 +9,7 @@
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
 	</head>
+	
 	<body class="picking">
 		<!-- debut menu -->
 		<div id="tcz_header_commun_menu"/>
