@@ -9,13 +9,10 @@
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
 	</head>
-	<!-- debut menu -->
+	<body class="picking">
+		<!-- debut menu -->
 		<div id="tcz_header_commun_menu"/>
-	<!-- fin menu -->
-			
-	<?php include("./../header_commun/header.php") ?>
-    <?php Common_Header::forApp('Picking TechTablet') ?>
-	<body>
+		<!-- fin menu -->
 		<div class="container">
 			<center><h1>Details produit</h1></center>
 			<div class="row">
@@ -57,6 +54,8 @@
 			var idProd="<?php echo $idProd ?>";
 			var numb="<?php echo $numb ?>";
 		</script>
+	<?php include("./../header_commun/header.php") ?>
+        <?php Common_Header::forApp('Picking TechTablet') ?>
 	</body>
 </html> 
    
