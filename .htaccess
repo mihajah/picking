@@ -5,7 +5,7 @@
     </IfModule>
 
     RewriteEngine On
-    RewriteBase /dev/pickingtechtablet/
+    RewriteBase /bo/pickingtechtablet/
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
