@@ -9,6 +9,13 @@
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
 	</head>
+	<!-- debut menu -->
+		<div id="tcz_header_commun_menu"/>
+	<!-- fin menu -->
+			
+	<?php include("./../header_commun/header.php") ?>
+    <?php Common_Header::forApp('Picking TechTablet') ?>
+    
 	<body>
 		<div class="container">
 			<center><h1>Liste des commandes</h1></center>
@@ -17,6 +24,7 @@
 			</thead>
 				<tr>
 				<th>Commandes</th>
+				<th>N° de commande</th>
 				</tr>
 			</thead>
 			
@@ -32,6 +40,10 @@
 		  <div id="loading-content"></div>
 		</div>
 		
+		<footer class="footer" style="display:block; bottom: 0;position: absolute;">
+			<span>Build 1.1.2</span>
+		</footer>
 	</body>
+	
 </html> 
    

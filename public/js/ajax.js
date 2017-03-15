@@ -43,6 +43,7 @@ function recursive(){
 												console.log("misy produit");
 												list =list+"<tr><td>"+response3.id+"</td><td>"+response3.name+"</td><td id='qtyMulti_"+response3.id+"'>"+item.qty+"</td><td>"+response3.collection.alt_name+"</td><td>"+response3.color.alt_name+"</td><td id='scan' class='test' data-id-line='"+response3.id+"'>"+response3.ean+"</td ><td><button class='btn btn-success' id='manuelMulti' onclick='ajoutMulti("+response3.id+","+item.qty+")'>Ajout manuel</button></td><td><button class='btn btn-danger' id='manquantMulti' onclick='manquantMulti("+response3.id+","+item.qty+")'>Produit manquant</button></td></tr>"; 
 												$('#listProdDuplicate').append(list);
+												$('#input_barcodeMultiple').focus();
 												counter++;
 											}
 										},error: function(xhr,status){
@@ -53,7 +54,9 @@ function recursive(){
 								});
 							}else{
 								console.log('ato ndray');
+								$('.multiple').hide();
 								$('#error_msg').hide();
+								$('.jumbotron').show();
 								$('#imageProdAdd').attr('src',response2.pictures[0]);
 								$('#boxNumberAdd').html(produitF[counter].box); 
 								  
@@ -69,8 +72,8 @@ function recursive(){
 								//counter++;
 								$('#input_barcode').val("");
 								$('#input_barcode').focus();
-								$('.multiple').hide();
-								$('.jumbotron').show();
+
+								
 								//i++;
 								//console.log('condition 1',i);
 							}
@@ -98,27 +101,6 @@ function recursive(){
 								//console.log('condition 1',i);
 						}
 						
-						/*
-						$('#error_msg').hide();
-						$('#imageProdAdd').attr('src',response2.pictures[0]);
-						$('#boxNumberAdd').html(produitF[counter].box); 
-						  
-						$('#productNameAdd').html(response2.name);
-						$('#decompte').val(produitF[counter].qty);
-						$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
-						 
-						
-						$('#input_barcode_hidden').val(response2.ean);
-						$('#colorAdd').html(response2.color.alt_name);
-						//console.log('test'+countprod);
-						//console.log(counter);
-						//counter++;
-						$('#input_barcode').val("");
-						$('#input_barcode').focus();
-						//i++;
-						//console.log('condition 1',i);
-						
-						*/
 						
 					},
 					error: function (xhr, status) { 
@@ -132,7 +114,9 @@ function recursive(){
 			
 		}else{
 			var JSONmanquant= JSON.stringify(produitManquant);
+			var JSONfini = JSON.stringify(produitF);
 			sessionStorage.setItem('pManquant',JSONmanquant); 
+			sessionStorage.setItem('pFini',JSONfini);
 			window.location = recap;
 		}
 	}
@@ -157,7 +141,7 @@ $(document).ready(function () {
 	
 	console.log('initialiser');  
 	$('#modal').hide();
-	//$('#loading-wrapper').show();
+	
 	
 	//AFFICHAGE DE LA LISTE DES COMMANDES
 	$.ajax({
@@ -168,15 +152,30 @@ $(document).ready(function () {
             success: function (response) {
                 var link="listeproduit/";
 				var list="";
-				response
+				response.sort(function(a,b) {
+					var x = a.customer.name.toLowerCase();
+					var y = b.customer.name.toLowerCase();
+					return x < y ? -1 : x > y ? 1 : 0;
+				});
+				console.log(response.length);
+				var x = response.length;
+				console.log(response);
+				
 				$.each(response, function (index, item) {
 					$('#loading-wrapper').show();
-					list=list+'<tr><td><a href="'+link+item.id+'" style="display:block; width:100%;">'+item.customer.name+'</a></td></tr>';
+					list=list+'<tr><td style="font-size: 30px;" class="nom"  ><input type="hidden" value ="'+item.customer.name+'"><a href="'+link+item.id+'" style="display:block; width:100%;" >'+item.customer.name+'</a></td><td style="font-size: 30px;">'+item.id+'</td></tr>';
 					$("#listCommand").html(list);
 				});
 				$('#loading-wrapper').hide();
-				//$('#modal').hide();
-				//bd.remove();
+				
+				
+				$('#listCommand').find('.nom').each(function() {
+					console.log($(this).text());
+					if($('#listCommand').find('input[value="' + $(this).text() + '"]').size() > 1) {
+						$(this).css('background-color','#cfcece');
+					}
+				});
+				
             },
             error: function (xhr, status) { 
                 alert("error");   
@@ -359,6 +358,7 @@ $(document).ready(function () {
 										});
 										console.log('sort finish');
 			//produitC.push(produitF);
+			console.log(produitF);
 			recursive();
 		}
 	};
@@ -504,10 +504,12 @@ $(document).ready(function () {
 		console.log(test);
 		if(test==test2){
 			console.log(res);
+			produitF[counter].qtyF++;
 			counter++;
 			sessionStorage.setItem('count',counter); 
 			$('#qty2').val(1);
 			$('#qtyscan').html(1);
+			
 			recursive(); 
 		}else{
 			console.log('condition 2');
@@ -537,7 +539,9 @@ $(document).ready(function () {
 	//AFFICHAGE PRODUIT MANQUANT
 	if(typeof idOrderFin !== "undefined"){
 		var pManquantJSON = sessionStorage.getItem('pManquant'); 
+		var pFiniJSON = sessionStorage.getItem('pFini'); 
 		var data = JSON.parse(pManquantJSON);
+		var dataFin = JSON.parse(pFiniJSON);
 		var list ="";
 		var list1 = "";
 		console.log(data);
@@ -546,6 +550,7 @@ $(document).ready(function () {
 		
 		
 		$('#loading-wrapper').show();
+		
 		/*
 		$.ajax({
             url: BASE_URL+"/orders/"+idOrderFin,
@@ -587,8 +592,29 @@ $(document).ready(function () {
             }
         });
 		*/
-		var x = 0;
-		var y = data.length;
+		console.log(dataFin);
+		$.each(dataFin,function(index2,item2){
+			console.log('finale');
+			$.ajax({
+				url: BASE_URL+"/products/"+item2.id,
+				type: "GET",
+				crossDomain: true,
+				dataType: 'json',
+				success: function (response) {
+					var link="detailproduit/";
+					//console.log(item.id);
+					if(item2.qtyF == "0"){
+						
+					}else{
+						list1 = list1+'<tr><td>'+response.box+'</td><td>'+response.name+'</td><td>'+item2.qtyF+'</td><td>'+response.quantity+'</td><td>'+response.collection.name+'</td><td>'+response.color.alt_name+'</td><td>'+response.id+'</td></tr>';
+					}
+					$("#listProd").html(list1);
+				},
+				error: function (xhr, status) { 
+					alert("error");
+				}
+			});
+		});
 		
 		if(data.length>0){
 		$.each(data,function(index,item){
@@ -603,29 +629,6 @@ $(document).ready(function () {
 					list = list+'<tr class="danger"><td>'+response2.box+'</td><td>'+response2.name+'</td><td>'+item.qty+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
 					$("#listProd2").html(list);
 					console.log(produitManquant);
-					x++;
-					if(x==y){
-						console.log(produitF);
-						$.each(produitF,function(index2,item2){
-							console.log('finale');
-							$.ajax({
-								url: BASE_URL+"/products/"+item2.id,
-								type: "GET",
-								crossDomain: true,
-								dataType: 'json',
-								success: function (response) {
-									var link="detailproduit/";
-									console.log(item.id);
-									list1 = list1+'<tr class="danger"><td>'+response.box+'</td><td>'+response.name+'</td><td>'+item2.qtyF+'</td><td>'+response.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response.color.alt_name+'</td><td>'+response.id+'</td></tr>';
-									$("#listProd2").html(list1);
-									console.log(produitManquant);
-								},
-								error: function (xhr, status) { 
-									alert("error");
-								}
-							});
-						});
-					}
 				},
 				error: function (xhr, status) { 
 					alert("error");
