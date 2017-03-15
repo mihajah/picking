@@ -2,8 +2,7 @@ var produitManquant =[];
 
 var c = sessionStorage.getItem('count'); 
 var decompte = 0;
-var produitF=[]; 
-var produitC=[]; 
+
 var box=[];
 var prodbox=[];
 var prodValid=[];
@@ -546,9 +545,6 @@ $(document).ready(function () {
 		var list1 = "";
 		console.log(data);
 		console.log(produitManquant);
-		
-		
-		
 		$('#loading-wrapper').show();
 		
 		/*

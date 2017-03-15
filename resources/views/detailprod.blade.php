@@ -8,14 +8,11 @@
 		<script src="{{asset('public/js/bootstrap.min.js')}}"></script>
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
-	</head>
-	<!-- debut menu -->
-		<div id="tcz_header_commun_menu"/>
-	<!-- fin menu -->
-			
-	<?php include("./../header_commun/header.php") ?>
-    <?php Common_Header::forApp('Picking TechTablet') ?>
-	<body>
+	</head>	
+	<body class="picking">
+		<!-- debut menu -->
+	    <div id="tcz_header_commun_menu"/>
+        <!-- fin menu -->
 		<div class="container">
 			<center><h1>Details produit</h1></center>
 			<div class="row">
@@ -53,10 +50,12 @@
 		  <div id="loading-content"></div>
 		</div>
 		
-	<script>
+	    <script>
 			var idProd="<?php echo $idProd ?>";
 			var numb="<?php echo $numb ?>";
 		</script>
+	<?php include("./../header_commun/header.php") ?>
+    <?php Common_Header::forApp('Picking TechTablet') ?>
 	</body>
 </html> 
    
