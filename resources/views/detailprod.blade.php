@@ -54,8 +54,8 @@
 			var idProd="<?php echo $idProd ?>";
 			var numb="<?php echo $numb ?>";
 		</script>
-	<?php include("./../header_commun/header.php") ?>
-        <?php Common_Header::forApp('Picking TechTablet') ?>
+	<?php // include("./../header_commun/header.php") ?>
+        <?php // Common_Header::forApp('Picking TechTablet') ?>
 	</body>
 </html> 
    
