@@ -11,13 +11,10 @@
 		<script src="{{asset('public/js/jquery.playSound.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
 	</head>
-	<!-- debut menu -->
+	<body class="picking">
+		<!-- debut menu -->
 		<div id="tcz_header_commun_menu"/>
-	<!-- fin menu -->
-			
-	<?php include("./../header_commun/header.php") ?>
-    <?php Common_Header::forApp('Picking TechTablet') ?>
-	<body>
+		<!-- fin menu -->
 		<div class="container">
 			<center><h1>Produit à prendre dans la liste</h1></center>
 			<div class="row">
@@ -97,6 +94,8 @@
 		var countOK = 0;
 		var counter = 0;
 		var produitManquant =[];
+		var produitF=[]; 
+		var produitC=[]; 
 		
 		function ajoutMulti(id,qty){ 
 			countOK++;
@@ -108,6 +107,13 @@
 			if(nbItem>0){
 				nbItem--;
 				$('#qtyMulti_'+id).text(nbItem);
+				console.log(produitF);
+				$.each(produitF, function(index,item){
+					if(item.id==id){
+						item.qtyF++;
+						console.log(produitF);
+					}
+				});
 				if(nbItem==0){
 					scan.text('OK');
 					scan.css("background-color","#fff000");
@@ -127,20 +133,16 @@
 			});
 			
 			if(x == countItem){
-				// alert("tapitra");
 				countOK = 0 ;
 				counter++;
 				$('#listProdDuplicate').html('');
 				recursive();
 			}
-			
-			//var qty =
-			
 		}
 		
 		function manquantMulti(id,qty){
 			countOK++;
-			produitManquant.push({'id':id,'qty':qty});
+			produitManquant.push({'id':id,'qty':$('#qtyMulti_'+id).text()});
 			var scan = $('#qtyMulti_'+id).closest("tr").find('#scan');
 			scan.text('OK');
 			scan.css("background-color","red");
@@ -155,7 +157,6 @@
 				}
 			});
 			if(x == countItem){
-				// alert("tapitra");
 				countOK = 0 ;
 				counter++;
 				$('#listProdDuplicate').html('');
@@ -163,6 +164,8 @@
 			}
 		}
 	</script>
+	<?php include("./../header_commun/header.php") ?>
+    <?php Common_Header::forApp('Picking TechTablet') ?>
 	</body> 
 </html> 
    
