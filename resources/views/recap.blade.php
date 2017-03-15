@@ -75,8 +75,8 @@
 			var idOrderFin="<?php echo $id ?>";   
 			var home = "{{route('home')}}";
 		</script>
-	<?php include("./../header_commun/header.php") ?>
-    	<?php Common_Header::forApp('Picking TechTablet') ?>
+	<?php // include("./../header_commun/header.php") ?>
+    	<?php // Common_Header::forApp('Picking TechTablet') ?>
 	</body> 
 </html> 
    
