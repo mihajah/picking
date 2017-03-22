@@ -133,8 +133,8 @@
 			});
 			
 			if(x == countItem){
-				countOK = 0 ;
-				counter++;
+				countOK = 0 ; 
+				//counter++;
 				$('#listProdDuplicate').html('');
 				recursive();
 			}
@@ -158,7 +158,7 @@
 			});
 			if(x == countItem){
 				countOK = 0 ;
-				counter++;
+				//counter++; 
 				$('#listProdDuplicate').html('');
 				recursive();
 			}

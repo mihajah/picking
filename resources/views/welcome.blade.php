@@ -8,6 +8,15 @@
 		<script src="{{asset('public/js/bootstrap.min.js')}}"></script>
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
+		
+		<style>
+			tr:nth-of-type(2n){
+				background-color:#cfcece
+			}
+			tr:nth-of-type(2n-1){
+				background-color:white
+			}
+		</style>
 	</head>
 	<body class="picking">
 		<!-- debut menu -->
