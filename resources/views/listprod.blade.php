@@ -9,7 +9,8 @@
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
 	</head>
-	<body class="picking">
+	
+	<body>
 		<!-- debut menu -->
 		<div id="tcz_header_commun_menu"/>
 		<!-- fin menu -->
@@ -48,7 +49,7 @@
 			var idOrder="<?php echo $id ?>";   
 		</script>
 	<?php include("./../header_commun/header.php") ?>
-    <?php Common_Header::forApp('Picking TechTablet') ?>
+    	<?php Common_Header::forApp('Picking TechTablet') ?>
 	</body> 
 </html> 
    

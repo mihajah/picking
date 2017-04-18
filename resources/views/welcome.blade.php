@@ -49,7 +49,7 @@
 			<span>Build 1.1.2</span>
 		</footer>
 	<?php include("./../header_commun/header.php") ?>
-    <?php Common_Header::forApp('Picking TechTablet') ?>
+        <?php Common_Header::forApp('Picking TechTablet') ?>
 	</body>
 	
 </html> 
