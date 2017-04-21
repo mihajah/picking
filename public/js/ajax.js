@@ -401,7 +401,7 @@ $(document).ready(function () {
 						recursive(); 
 					}					
 					$('#loading-wrapper').show();
-					setTimeout(function(){ $('#loading-wrapper').hide(); }, 2000);
+					setTimeout(function(){ $('#loading-wrapper').hide(); }, 200);
 					console.log('compteur produit : '+countprod);
 				}
 				else{ 
@@ -409,7 +409,7 @@ $(document).ready(function () {
 					beep.play();
 					$('#error_msg').show();
 					$('#error_msg_txt').html('Code EAN erroné');
-					setTimeout(function(){ $('#input_barcode').val(''); }, 2000);
+					setTimeout(function(){ $('#input_barcode').val(''); }, 200);
 				}
 			}
 		}else{
@@ -481,7 +481,7 @@ $(document).ready(function () {
 							buzz.play();
 							$('#error_msg2').show();
 							$('#error_msg_txt2').html('Code EAN erroné');
-							setTimeout(function(){ $('#input_barcodeMultiple').val(''); }, 2000);
+							setTimeout(function(){ $('#input_barcodeMultiple').val(''); }, 200);
 						}
 						
 						
@@ -521,7 +521,7 @@ $(document).ready(function () {
 			recursive(); 
 		}
 		$('#loading-wrapper').show();
-		setTimeout(function(){ $('#loading-wrapper').hide(); }, 2000);
+		setTimeout(function(){ $('#loading-wrapper').hide(); }, 200);
 	});
 	
 	$('#manquant').click(function(){
@@ -532,7 +532,7 @@ $(document).ready(function () {
 		$('#qty2').val(1);
 		recursive();  
 		$('#loading-wrapper').show();
-		setTimeout(function(){ $('#loading-wrapper').hide(); }, 2000);
+		setTimeout(function(){ $('#loading-wrapper').hide(); }, 200);
 	});  
 	
 	//AFFICHAGE PRODUIT MANQUANT
