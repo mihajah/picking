@@ -45,7 +45,7 @@
 		  <div id="loading-content"></div>
 		</div>
 		
-		<footer class="footer" style="display:block; bottom: 0;position: absolute;">
+		<footer class="footer" style="display:block; bottom: 0;position: fixed;">
 			<span>Build 1.1.2</span>
 		</footer>
 	<?php include("./../header_commun/header.php") ?>
