@@ -80,5 +80,4 @@
 			var home = "{{route('home')}}";
 		</script>
 	</body> 
-</html> 
-   
+</html>
