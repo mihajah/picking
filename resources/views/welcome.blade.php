@@ -3,19 +3,23 @@
 		<title>Liste des commandes</title>
 		<link href="{{asset('public/css/bootstrap.min.css')}}" rel="stylesheet">
 		<link href="{{asset('public/css/style.css')}}" rel="stylesheet">
+		<link href="{{asset('public/css/style_header.css')}}" rel="stylesheet">
 		
 		<script src="{{asset('public/js/jquery.min.js')}}"></script>
 		<script src="{{asset('public/js/bootstrap.min.js')}}"></script>
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
+		<script src="{{asset('public/js/config_header.js')}}"></script> 
+		<script src="{{asset('public/js/header.js')}}"></script> 
 		
 		<style>
+		/*
 			tr:nth-of-type(2n){
 				background-color:#cfcece
 			}
 			tr:nth-of-type(2n-1){
 				background-color:white
-			}
+			} */
 		</style>
 	</head>
 	<body class="picking">
@@ -48,8 +52,6 @@
 		<footer class="footer" style="display:block; bottom: 0;position: fixed;">
 			<span>Build 1.1.2</span>
 		</footer>
-	<?php include("./../header_commun/header.php") ?>
-        <?php Common_Header::forApp('Picking TechTablet') ?>
 	</body>
 	
 </html> 

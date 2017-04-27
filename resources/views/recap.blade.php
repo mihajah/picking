@@ -3,14 +3,17 @@
 		<title>Récapitulatif de la commande</title>
 		<link href="{{asset('public/css/bootstrap.min.css')}}" rel="stylesheet">
 		<link href="{{asset('public/css/style.css')}}" rel="stylesheet">
+		<link href="{{asset('public/css/style_header.css')}}" rel="stylesheet">
 		
 		<script src="{{asset('public/js/jquery.min.js')}}"></script>
 		<script src="{{asset('public/js/bootstrap.min.js')}}"></script>
 		<script src="{{asset('public/js/ajax.js')}}"></script>
-		<script src="{{asset('public/js/config.js')}}"></script> 
-	</head>
+		<script src="{{asset('public/js/config.js')}}"></script>
+		<script src="{{asset('public/js/config_header.js')}}"></script> 
+		<script src="{{asset('public/js/header.js')}}"></script> 
 
-	<body>
+	</head>
+	<body class="picking">
 		<!-- debut menu -->
 		<div id="tcz_header_commun_menu"/>
 		<!-- fin menu -->
@@ -76,8 +79,5 @@
 			var idOrderFin="<?php echo $id ?>";   
 			var home = "{{route('home')}}";
 		</script>
-	<?php include("./../header_commun/header.php") ?>
-    	<?php Common_Header::forApp('Picking TechTablet') ?>
 	</body> 
-</html> 
-   
+</html>
