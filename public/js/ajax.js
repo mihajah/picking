@@ -103,7 +103,7 @@ function recursive(){
 						
 					},
 					error: function (xhr, status) { 
-						alert("error");
+						// alert("error");
 					}
 				});
 			
@@ -162,22 +162,40 @@ $(document).ready(function () {
 				
 				$.each(response, function (index, item) {
 					$('#loading-wrapper').show();
-					list=list+'<tr><td style="font-size: 30px;" class="nom"  ><input type="hidden" value ="'+item.customer.name+'"><a href="'+link+item.id+'" style="display:block; width:100%;" >'+item.customer.name+'</a></td><td style="font-size: 30px;">'+item.id+'</td></tr>';
-					$("#listCommand").html(list);
+					list=list+'<tr class="nom"><td style="font-size: 30px;" ><input type="hidden" value ="'+item.customer.name+'"><a href="'+link+item.id+'" style="display:block; width:100%;" >'+item.customer.name+'</a></td><td style="font-size: 30px;">'+item.id+'</td></tr>';
+					$("#listCommand").html(list); 
 				});
-				$('#loading-wrapper').hide();
+				$('#loading-wrapper').hide(); 
 				
-				
-				$('#listCommand').find('.nom').each(function() {
-					console.log($(this).text());
-					if($('#listCommand').find('input[value="' + $(this).text() + '"]').size() > 1) {
-						$(this).css('background-color','#cfcece');
+				var value,test,test2,clientName,clientNameNext,Css;
+				var arrayNom=[];
+				$('#listCommand').find('.nom').each(function(index,item) { 
+					arrayNom.push($(this).text()); 
+				});
+				// console.log(arrayNom);
+				$('#listCommand').find('.nom').each(function(index,item) { 
+					var now = $(this);
+					var client = now.find('td:nth-child(1)').text();
+					if(now.prev('tr').length == 0)
+						return;
+					var pCol = now.prev('tr').css('background-color');
+					var pClient = now.prev('tr').find('td:nth-child(1)').text();
+
+					if(client == pClient){
+						now.css('background-color', pCol);
 					}
+					else{
+						if(pCol == 'rgb(207, 206, 206)'){
+							now.css('background-color', 'rgb(255, 255, 255)');
+						}
+						else{
+							now.css('background-color', 'rgb(207, 206, 206)');
+						}
+					}					
 				});
-				
             },
             error: function (xhr, status) { 
-                alert("error");   
+                // alert("error");   
             }
         });
 
@@ -238,13 +256,13 @@ $(document).ready(function () {
 							}	 
 						},
 						error: function (xhr, status) { 
-							alert("error");
+							// alert("error");
 						}
 					});
 				});
             },
             error: function (xhr, status) {
-                alert("error");
+                // alert("error");
             }
         });
 		
@@ -270,7 +288,7 @@ $(document).ready(function () {
 				$('#qtyNumb').html(numb);
 			},
 			error: function (xhr, status) { 
-				alert("error");
+				// alert("error");
 			}
 		});
 	}
@@ -310,7 +328,7 @@ $(document).ready(function () {
 							}
 						},
 						error: function (xhr, status,error) { 
-							alert("erreur dans le each");
+							// alert("erreur dans le each");
 						}
 					})
 					
@@ -323,7 +341,7 @@ $(document).ready(function () {
 				};
             },
             error: function (xhr, status) {
-                alert("error");
+                // alert("error");
             }
         }).done(function() {
 						
@@ -607,7 +625,7 @@ $(document).ready(function () {
 					$("#listProd").html(list1);
 				},
 				error: function (xhr, status) { 
-					alert("error");
+					// alert("error");
 				}
 			});
 		});
@@ -627,7 +645,7 @@ $(document).ready(function () {
 					console.log(produitManquant);
 				},
 				error: function (xhr, status) { 
-					alert("error");
+					// alert("error");
 				}
 			});
 			

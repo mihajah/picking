@@ -3,11 +3,14 @@
 		<title>Details produit</title>
 		<link href="{{asset('public/css/bootstrap.min.css')}}" rel="stylesheet">
 		<link href="{{asset('public/css/style.css')}}" rel="stylesheet">
+		<link href="{{asset('public/css/style_header.css')}}" rel="stylesheet">
 		
 		<script src="{{asset('public/js/jquery.min.js')}}"></script>
 		<script src="{{asset('public/js/bootstrap.min.js')}}"></script>
 		<script src="{{asset('public/js/ajax.js')}}"></script>
 		<script src="{{asset('public/js/config.js')}}"></script> 
+		<script src="{{asset('public/js/config_header.js')}}"></script> 
+		<script src="{{asset('public/js/header.js')}}"></script> 
 	</head>	
 	<body class="picking">
 		<!-- debut menu -->
@@ -54,8 +57,6 @@
 			var idProd="<?php echo $idProd ?>";
 			var numb="<?php echo $numb ?>";
 		</script>
-	<?php include("./../header_commun/header.php") ?>
-    <?php Common_Header::forApp('Picking TechTablet') ?>
 	</body>
 </html> 
    
