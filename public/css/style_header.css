@@ -1,0 +1,67 @@
+.tcz_header_menu {
+    background-color: #1e1e1e;
+    text-align: left;
+}
+
+.tcz_menu {
+    font-family: 'Roboto', sans-serif !important;
+    text-align: left;
+    background-color: #36474f;
+}
+
+.tcz_menu ul {
+    margin: 0 0 0 -40px !important;
+}
+
+.tcz_menu li {
+    list-style: none;
+    padding: 0 0 0 40px;
+}
+
+/** picking **/
+.picking .tcz_menu li {
+    padding: 0 0 0 80px;
+}
+
+
+
+/** END picking **/
+
+.tcz_menu li:hover {
+    background-color: #838383;
+}
+
+.tcz_menu li a {
+    color : #fff ;
+    font-size: 16px;
+    display: block;
+    padding: 2px 0 !important;
+}
+
+.tcz_menu li a:hover {
+    text-decoration: none !important;
+}
+
+.hamburger, .cross {
+    background:none;
+    position:absolute;
+    top:0;
+    right:0;
+    font-size: 20px;
+    width: 40px;
+    border: none;
+    margin: 0 0 5px 0px;
+    cursor:pointer;
+    outline:none;
+    z-index:1000;
+    color: #d8d5d5 !important;
+}
+
+#tcz_brand_name {
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 1.5em;
+    color: #e1e1e1;
+    font-weight: bolder;
+    margin-left: 20px;
+}
+
