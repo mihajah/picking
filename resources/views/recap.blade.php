@@ -64,9 +64,7 @@
 			</tbody>
 			</table>
 			
-			<center><button class="btn btn-success" id="terminus" style="font-size: 35px;">OK</button></center>
-			<!--<center><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="choiceForShip">Valider</button></center>-->
-
+			<center><button class="btn btn-success" id="terminus">OK</button></center> 
 			</div>
 		</div> 
 		<div id="modal">
@@ -75,27 +73,6 @@
 		<div id="loading-wrapper">
 		  <div id="loading-text">Traitement</div>
 		  <div id="loading-content"></div>
-		</div>
-		
-		<!-- Modal -->
-		<div id="myModal" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-			  <div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Mode d'expédition</h4>
-			  </div>
-			  <div class="modal-body">
-					
-			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal"  id="terminus">Annuler</button>
-			  </div>
-			</div>
-
-		  </div>
 		</div>
 		 
 		<script>
