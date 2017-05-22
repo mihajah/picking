@@ -13,7 +13,8 @@
 		<script src="{{asset('public/js/header.js')}}"></script> 
 
 	</head>
-	<body class="picking">
+	
+	<body>
 		<!-- debut menu -->
 		<div id="tcz_header_commun_menu"/>
 		<!-- fin menu -->

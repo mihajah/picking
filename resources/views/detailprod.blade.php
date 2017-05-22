@@ -58,5 +58,4 @@
 			var numb="<?php echo $numb ?>";
 		</script>
 	</body>
-</html> 
-   
+</html>

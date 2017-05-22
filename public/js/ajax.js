@@ -550,6 +550,9 @@ $(document).ready(function () {
 		var list1 = "";
 		console.log(data);
 		console.log(produitManquant);
+		
+		
+		
 		$('#loading-wrapper').show();
 		
 		console.log(dataFin);
