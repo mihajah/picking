@@ -13,7 +13,7 @@ $(function() {
 		var clsapp   = config.menus[m].class_app;
 		var urlapp   = config.menus[m].url_app;
 		var labelapp = config.menus[m].menu_label;
-		list.append('<li><a class="_'+clsapp+'_" href="'+urlapp+'">'+labelapp+'</a></li>');
+		list.append('<li><a target="_blank" class="_'+clsapp+'_" href="'+urlapp+'">'+labelapp+'</a></li>');
 	}
 	
 	menu.append(list);
@@ -49,7 +49,8 @@ $(function() {
             event.preventDefault();
             var val_act = $(this).attr('href');
             val_act = val_act.replace(/\?p=\d+/g,'');
-            window.location.href = val_act+"?p="+param_val;
+            //window.location.href = val_act+"?p="+param_val;
+            window.open(val_act+"?p="+param_val);
         }
     });
 
