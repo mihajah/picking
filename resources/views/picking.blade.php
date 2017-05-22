@@ -54,7 +54,7 @@
 				<input type="hidden" value="" class="form-control" id="qty"><br> 	
 				<input type="hidden" value="1" class="form-control" id="qty2"><br>
 				<input type="hidden" value="" class="form-control" id="decompte"><br>				
-				<center><button class="btn btn-success" id="manuel">Ajout manuel</button> <button class="btn btn-danger" id="manquant">Produit manquant</button><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary">Retour</a></center>
+				<center><button class="btn btn-success" id="manuel" style="font-size: 35px;">Ajout manuel</button> <button class="btn btn-danger" id="manquant" style="font-size: 35px;">Produit manquant</button><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary" style="font-size: 35px;">Retour</a></center>
 			</div>  
 			
 			</div>
@@ -65,6 +65,7 @@
 			</thead>
 				<tr>
 				<th>ID </th>
+				<th></th>
 				<th>Nom du produit </th>
 				<th>Quantité à prendre </th>
 				<th>Collection produit </th>
@@ -80,7 +81,7 @@
                           <strong>Erreur!</strong> <span id="error_msg_txt2"></span>.
                         </div> 
 			<input type="text" class="form-control" id="input_barcodeMultiple" autofocus><br> 
-			<center><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary">Retour</a></center>
+			<center><a href="{{ route('listProd',['id'=>$id]) }}" class="btn btn-primary" style="font-size: 35px;">Retour</a></center>
 			</div>
 		</div> 
 		<div id="modal">
@@ -111,6 +112,7 @@
 			if(nbItem>0){
 				nbItem--;
 				$('#qtyMulti_'+id).text(nbItem);
+				$('#qtyMoins_'+id).text(nbItem);
 				console.log(produitF);
 				$.each(produitF, function(index,item){
 					if(item.id==id){
@@ -152,6 +154,7 @@
 			scan.css("background-color","red");
 			scan.css("text-align","center");
 			$('#qtyMulti_'+id).text(0);
+			$('#qtyMoins_'+id).text(0);
 			var $item = $("tr").find('#scan');
 			var x = 0;
 			var countItem = $item.length;

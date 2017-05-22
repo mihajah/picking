@@ -37,7 +37,7 @@
 			<tbody id="listProd">  
 			</tbody>
 			</table>
-			<center><a href="{{route('picking',['id'=>$id])}}" class="btn btn-success" style="width:150px; height:50px;font-size:25px;"><b>Picking</b></a>  <a href="{{ url('/') }}" class="btn btn-primary">Retour</a></center> 
+			<center><a href="{{route('picking',['id'=>$id])}}" class="btn btn-success" style="width:300px; height:120px;font-size:75px;"><b>Picking</b></a>  <a href="{{ url('/') }}" class="btn btn-primary" style="font-size:35px;">Retour</a></center> 
 			</div>
 		</div> 
 		<div id="modal">

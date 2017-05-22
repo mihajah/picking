@@ -1,20 +1,14 @@
 var produitManquant =[];  
-
 var c = sessionStorage.getItem('count'); 
 var decompte = 0;
-
 var box=[];
 var prodbox=[];
 var prodValid=[];
 
-
-
 function recursive(){
-		
 		console.log('lasa');
 		if(counter< produitF.length){
 			$('#qty').val(produitF[counter].qty);
-				
 				$.ajax({
 					url: BASE_URL+"/products/"+produitF[counter].id,
 					type: "GET",
@@ -40,7 +34,7 @@ function recursive(){
 											if(response3.box==boxis){
 												$('.multiple').show();
 												console.log("misy produit");
-												list =list+"<tr><td>"+response3.id+"</td><td>"+response3.name+"</td><td id='qtyMulti_"+response3.id+"'>"+item.qty+"</td><td>"+response3.collection.alt_name+"</td><td>"+response3.color.alt_name+"</td><td id='scan' class='test' data-id-line='"+response3.id+"'>"+response3.ean+"</td ><td><button class='btn btn-success' id='manuelMulti' onclick='ajoutMulti("+response3.id+","+item.qty+")'>Ajout manuel</button></td><td><button class='btn btn-danger' id='manquantMulti' onclick='manquantMulti("+response3.id+","+item.qty+")'>Produit manquant</button></td></tr>"; 
+												list =list+"<tr><td>"+response3.id+"</td><td><img style='width:50%;' src='"+response3.pictures[0]+"' alt='produit'></td><td>"+response3.name+"</td><td style='display:none;' id='qtyMulti_"+response3.id+"'>"+item.qty+"</td><td id='multiBold'><span id='qtyMoins_"+response3.id+"'>"+item.qty+"</span>/<span>"+item.qty+"</span></td><td>"+response3.collection.alt_name+"</td><td>"+response3.color.alt_name+"</td><td id='scan' class='test' data-id-line='"+response3.id+"'>"+response3.ean+"</td ><td><button class='btn btn-success' id='manuelMulti' style='font-size: 35px;' onclick='ajoutMulti("+response3.id+","+item.qty+")'>Ajout manuel</button></td><td><button class='btn btn-danger' style='font-size: 35px;' id='manquantMulti' onclick='manquantMulti("+response3.id+","+item.qty+")'>Produit manquant</button></td></tr>"; 
 												$('#listProdDuplicate').append(list);
 												$('#input_barcodeMultiple').focus();
 												counter++;
@@ -66,15 +60,9 @@ function recursive(){
 								
 								$('#input_barcode_hidden').val(response2.ean);
 								$('#colorAdd').html(response2.color.alt_name);
-								//console.log('test'+countprod);
-								//console.log(counter);
-								//counter++;
+	
 								$('#input_barcode').val("");
 								$('#input_barcode').focus();
-
-								
-								//i++;
-								//console.log('condition 1',i);
 							}
 						}else{
 							console.log('ato ndray ko');
@@ -85,19 +73,12 @@ function recursive(){
 								$('#productNameAdd').html(response2.name);
 								$('#decompte').val(produitF[counter].qty);
 								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
-								 
-								
 								$('#input_barcode_hidden').val(response2.ean);
 								$('#colorAdd').html(response2.color.alt_name);
-								//console.log('test'+countprod);
-								//console.log(counter);
-								//counter++;
 								$('#input_barcode').val("");
 								$('#input_barcode').focus();
 								$('.multiple').hide();
 								$('.jumbotron').show();
-								//i++;
-								//console.log('condition 1',i);
 						}
 						
 						
@@ -106,11 +87,6 @@ function recursive(){
 						// alert("error");
 					}
 				});
-			
-			
-			
-
-			
 		}else{
 			var JSONmanquant= JSON.stringify(produitManquant);
 			var JSONfini = JSON.stringify(produitF);
@@ -471,7 +447,14 @@ $(document).ready(function () {
 							qtyInt--;
 							
 							$('#qtyMulti_'+id).html(qtyInt);
+							$('#qtyMoins_'+id).html(qtyInt);
 							$('#input_barcodeMultiple').val("");
+							$.each(produitF, function(index,item){
+								if(item.id==id){
+									item.qtyF++;
+									console.log(produitF);
+								}
+							});
 						}else{
 							$(value).text("OK");
 							$(value).css("background-color","green");
@@ -479,13 +462,18 @@ $(document).ready(function () {
 							$('#error_msg2').hide();
 							$('#input_barcodeMultiple').val("");
 							$('#qtyMulti_'+id).html(0); 
+							$('#qtyMoins_'+id).html(0);
+							console.log(counter);
 							countOK++;
 						}
-						
-						
-						//counter++;
-						console.log(countOK); 
-						if(countOK==countItem){ 
+
+						var testOK = 0;
+						$.each($item,function(key,value){
+							if($(value).text()=="OK"){
+								testOK++;
+							}
+						});
+						if(testOK==countItem){
 							$('#listProdDuplicate').html('');
 							countOK = 0; 
 							recursive();
@@ -513,7 +501,6 @@ $(document).ready(function () {
 	
 	
 	//FONCTION RECURSIVE
-	
 	
 	$('#manuel').click(function(){
 		var test = $('#qty').val();
@@ -565,47 +552,6 @@ $(document).ready(function () {
 		console.log(produitManquant);
 		$('#loading-wrapper').show();
 		
-		/*
-		$.ajax({
-            url: BASE_URL+"/orders/"+idOrderFin,
-            type: "GET",
-            crossDomain: true,
-            dataType: 'json',
-            success: function (response) {
-                var link="listeproduit/";
-				var list="";
-				var produit=[];
-				produit=response.cart;
-				$('#societyName').html(response.customer.name);
-				console.log(produit);
-				
-				$.each(produit,function(index,item){
-					$.ajax({
-						url: BASE_URL+"/products/"+index,
-						type: "GET",
-						crossDomain: true,
-						dataType: 'json',
-						success: function (response2) {
-							var link="detailproduit/";
-							console.log(index);
-							list = list+'<tr class="success"><td>'+response2.box+'</td><td>'+response2.name+'</td><td>'+item+'</td><td>'+response2.quantity+'</td><td>'+response2.collection.name+'</td><td>'+response2.color.alt_name+'</td><td>'+response2.id+'</td></tr>';
-							$("#listProd").html(list);
-							console.log(produitManquant);
-						},
-						error: function (xhr, status) { 
-							alert("error");
-						}
-					});
-					
-				});
-				
-				
-            },
-            error: function (xhr, status) {
-                alert("error");
-            }
-        });
-		*/
 		console.log(dataFin);
 		$.each(dataFin,function(index2,item2){
 			console.log('finale');
@@ -656,6 +602,48 @@ $(document).ready(function () {
 	$('#terminus').click(function(){
 		sessionStorage.clear();
 		window.location = home;
+	});
+	
+	//SHIPPING CHOICE
+	$('#choiceForShip').click(function(){
+		if(typeof idOrderFin !== 'undefined'){
+			$.ajax({
+				url: BASE_URL+"/orders/"+idOrderFin,
+				type: "GET",
+				crossDomain: true,
+				dataType: 'json',
+				success: function (response) {
+					if(response.delivery24==0){
+						$.ajax({
+							url: BASE_URL+"/orders/customer/"+response.customer.id,
+							type: "GET",
+							crossDomain: true,
+							dataType: 'json',
+							success: function (response2) {
+								var cart = 0;
+								$.each(response2,function(index,item){
+									if(item.delivery24 == 1){
+										
+									}else{
+										cart = 1;
+									}
+								});
+								if(cart == 1){
+									var bouton = '<center><button class="btn btn-default">Lettre suivi</button><button class="btn btn-default">Colissimo</button></center>';
+									$('.modal-body').append(bouton);
+								}
+							},
+							error: function (xhr, status) { 
+								// alert("error");
+							}
+						});
+					}
+				},
+				error: function (xhr, status) { 
+					// alert("error");
+				}
+			});
+		}
 	});
 	
 	
