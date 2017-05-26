@@ -34,6 +34,9 @@
 					<td>Nom du produit :</td><td id="productNameAdd">  </td>
 					</tr>
 					<tr> 
+					<td>id du produit :</td><td id="productIdAdd">  </td>
+					</tr>
+					<tr> 
 					<td>Couleur du produit :</td><td id="colorAdd">  </td>
 					</tr>
 					<tr> 

@@ -28,6 +28,7 @@
 		<!-- fin menu -->
 		<div class="container">
 			<center><h1>Liste des commandes</h1></center>
+			<center><h2  class="btn-primary"><b>Not picked</b></h2></center>
 			<table class="table table-hover">
 			<thead>
 			</thead>
@@ -39,6 +40,21 @@
 			
 			<tbody id="listCommand">
 			</tbody>
+			</table>
+			
+			<center><h2 class="btn-success"><b>Picked</b></h2></center>
+			<table class="table table-hover">
+			<thead>
+			</thead>
+				<tr>
+				<th>Commandes</th>
+				<th>N° de commande</th>
+				</tr>
+			</thead>
+			
+			<tbody id="listCommand2">
+			</tbody>
+			</table>
 		</div>
 		<div id="modal">
 			<img src="{{asset('public/css/ring.gif')}}" id="loading"> 

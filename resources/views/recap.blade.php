@@ -64,7 +64,8 @@
 			</tbody>
 			</table>
 			
-			<center><button class="btn btn-success" id="terminus">OK</button></center> 
+			<!--<center><button class="btn btn-success" id="terminus" style="font-size: 35px;">OK</button></center>-->
+			<center><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="choiceForShip">Valider</button></center>
 			</div>
 		</div> 
 		<div id="modal">
@@ -74,10 +75,44 @@
 		  <div id="loading-text">Traitement</div>
 		  <div id="loading-content"></div>
 		</div>
+		
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Mode d'expédition</h4>
+			  </div>
+			  <div class="modal-body">
+				<div id="valeur" style="display:none;">
+				<center>
+				<input type="text" id="poids" name="poids" placeholder="poids (kg)" class="form-control">
+				<input type="text" id="largeur" name="largeur" placeholder="largeur (cm)" class="form-control">
+				<input type="text" id="longueur" name="longueur" placeholder="longueur (cm)" class="form-control">
+				<input type="text" id="hauteur" name="hauteur" placeholder="hauteur (cm)" class="form-control">
+				</center>
+				</div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"  id="terminus">Annuler</button>
+			  </div>
+			</div>
+
+		  </div>
+		</div>
 		 
 		<script>
 			var idOrderFin="<?php echo $id ?>";   
 			var home = "{{route('home')}}";
+			function mode(id,value){
+				choose(id,value);
+			}
+			function modeChrono(id,value){
+				chooseChrono(id,value);
+			}
 		</script>
 	</body> 
 </html>

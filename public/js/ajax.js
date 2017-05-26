@@ -61,6 +61,7 @@ function recursive(){
 								$('#boxNumberAdd').html(produitF[counter].box); 
 								  
 								$('#productNameAdd').html(response2.name);
+								$('#productIdAdd').html(response2.id);
 								$('#decompte').val(produitF[counter].qty);
 								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
 								 
@@ -80,28 +81,20 @@ function recursive(){
 						}else{
 							console.log('ato ndray ko');
 							$('#error_msg').hide();
-								$('#imageProdAdd').attr('src',response2.pictures[0]);
-								$('#boxNumberAdd').html(produitF[counter].box); 
-								  
-								$('#productNameAdd').html(response2.name);
-								$('#decompte').val(produitF[counter].qty);
-								$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
-								 
-								
-								$('#input_barcode_hidden').val(response2.ean);
-								$('#colorAdd').html(response2.color.alt_name);
-								//console.log('test'+countprod);
-								//console.log(counter);
-								//counter++;
-								$('#input_barcode').val("");
-								$('#input_barcode').focus();
-								$('.multiple').hide();
-								$('.jumbotron').show();
-								//i++;
-								//console.log('condition 1',i);
-						}
-						
-						
+							$('#imageProdAdd').attr('src',response2.pictures[0]);
+							$('#boxNumberAdd').html(produitF[counter].box); 
+							  
+							$('#productNameAdd').html(response2.name);
+							$('#productIdAdd').html(response2.id);
+							$('#decompte').val(produitF[counter].qty);
+							$('#qtyNumbAdd').html(produitC[counter].qty+'/'+produitF[counter].qty);
+							$('#input_barcode_hidden').val(response2.ean);
+							$('#colorAdd').html(response2.color.alt_name);
+							$('#input_barcode').val("");
+							$('#input_barcode').focus();
+							$('.multiple').hide();
+							$('.jumbotron').show();
+						}	
 					},
 					error: function (xhr, status) { 
 						// alert("error");
@@ -152,6 +145,7 @@ $(document).ready(function () {
             success: function (response) {
                 var link="listeproduit/";
 				var list="";
+				var list2="";
 				response.sort(function(a,b) {
 					var x = a.customer.name.toLowerCase();
 					var y = b.customer.name.toLowerCase();
@@ -162,19 +156,40 @@ $(document).ready(function () {
 				console.log(response);
 				
 				$.each(response, function (index, item) {
-					$('#loading-wrapper').show();
-					list=list+'<tr class="nom"><td style="font-size: 30px;" ><input type="hidden" value ="'+item.customer.name+'"><a href="'+link+item.id+'" style="display:block; width:100%;" >'+item.customer.name+'</a></td><td style="font-size: 30px;">'+item.id+'</td></tr>';
-					$("#listCommand").html(list); 
+					if(item.shipping_mode == 0){
+						$('#loading-wrapper').show();
+						list=list+'<tr class="nom"><td style="font-size: 30px;" ><input type="hidden" value ="'+item.customer.name+'"><a href="'+link+item.id+'" style="display:block; width:100%;" >'+item.customer.name+'</a></td><td style="font-size: 30px;">'+item.id+'</td></tr>';
+						$("#listCommand").html(list); 
+					}else{
+						$('#loading-wrapper').show();
+						list2=list2+'<tr class="nom"><td style="font-size: 30px;" ><input type="hidden" value ="'+item.customer.name+'"><a href="'+link+item.id+'" style="display:block; width:100%;" >'+item.customer.name+'</a></td><td style="font-size: 30px;">'+item.id+'</td></tr>';
+						$("#listCommand2").html(list2); 
+					}
+					
 				});
 				$('#loading-wrapper').hide(); 
-				
-				var value,test,test2,clientName,clientNameNext,Css;
-				var arrayNom=[];
 				$('#listCommand').find('.nom').each(function(index,item) { 
-					arrayNom.push($(this).text()); 
+					var now = $(this);
+					var client = now.find('td:nth-child(1)').text();
+					if(now.prev('tr').length == 0)
+						return;
+					var pCol = now.prev('tr').css('background-color');
+					var pClient = now.prev('tr').find('td:nth-child(1)').text();
+
+					if(client == pClient){
+						now.css('background-color', pCol);
+					}
+					else{
+						if(pCol == 'rgb(207, 206, 206)'){
+							now.css('background-color', 'rgb(255, 255, 255)');
+						}
+						else{
+							now.css('background-color', 'rgb(207, 206, 206)');
+						}
+					}					
 				});
-				// console.log(arrayNom);
-				$('#listCommand').find('.nom').each(function(index,item) { 
+				
+				$('#listCommand2').find('.nom').each(function(index,item) { 
 					var now = $(this);
 					var client = now.find('td:nth-child(1)').text();
 					if(now.prev('tr').length == 0)
@@ -662,5 +677,130 @@ $(document).ready(function () {
 		window.location = home;
 	});
 	
-	
-});    
+	//SHIPPING CHOICE
+	$('#choiceForShip').click(function(){
+		if(typeof idOrderFin !== 'undefined'){
+			$.ajax({
+				url: BASE_URL+"/orders/"+idOrderFin,
+				type: "GET",
+				crossDomain: true,
+				dataType: 'json',
+				success: function (response) {
+					var cart = 0;
+					if(response.delivery24==0){
+						$.ajax({
+							url: BASE_URL+"/orders/customer/"+response.customer.id,
+							type: "GET",
+							crossDomain: true,
+							dataType: 'json',
+							success: function (response2) {
+								
+								$.each(response2,function(index,item){
+									if(item.delivery24 == 1 && item.status == 2 && item.id !== idOrderFin){
+										cart = 3;
+										console.log(cart);
+										return false;
+									}else if(item.status == 2 && item.shipping_mode == 2 && item.id !== idOrderFin){
+										cart = 2;
+										console.log(cart);
+										return false;
+									}else{
+										cart = 1;
+									}
+								});
+								if(cart == 1){
+									var bouton = '<center><button class="btn btn-default" onclick="mode('+idOrderFin+',1)">Lettre suivi</button><button class="btn btn-default" onclick="mode('+idOrderFin+',2)">Colissimo</button></center>';
+									$('.modal-body').append(bouton);
+								}
+								if(cart == 2){
+									var bouton = '<center><button class="btn btn-default" onclick="mode('+idOrderFin+',2)">Colissimo</button></center>';
+									$('.modal-body').append(bouton);
+								}
+								if(cart == 3){
+									var bouton = '<center><button class="btn btn-default" onclick="modeChrono('+idOrderFin+',3)">Chronopost</button></center>';
+									$('.modal-body').append(bouton);
+									$('#valeur').show();
+								}
+								
+							},
+							error: function (xhr, status) { 
+								// alert("error");
+							}
+						});
+					}else{
+						var bouton = '<center><button class="btn btn-default" onclick="modeChrono('+idOrderFin+',3)">Chronopost</button></center><br>';
+						$('.modal-body').append(bouton);
+						$('#valeur').show();
+					}
+				},
+				error: function (xhr, status) { 
+					// alert("error");
+				}
+			});
+		}
+	});
+});  
+//Choose mode
+function choose(id,value){
+	console.log('click');
+	$.ajax({
+		url: BASE_URL + "/getOrdersToShip",
+		type: "PUT",
+		crossDomain: true,
+		dataType: 'json',			
+		data : 	{
+			"id" : id, 
+			"shipping_mode" : value
+		},
+		success: function (response) {
+			console.log(response);
+			sessionStorage.clear();
+			window.location = home;
+		},
+		error: function (xhr, status) { 
+			// alert("");
+		}
+	});
+}  
+
+function chooseChrono(id,value){
+	console.log('clickChrono');
+	$.ajax({
+		url: BASE_URL + "/getOrdersToShip",
+		type: "PUT",
+		crossDomain: true,
+		dataType: 'json',			
+		data : 	{
+			"id" : id, 
+			"shipping_mode" : value
+		},
+		success: function (response) {
+			console.log(response);
+			$.ajax({
+				url: BASE_URL + "/chronopost",
+				type: "PUT",
+				crossDomain: true,
+				dataType: 'json',			
+				data : 	{
+					"id" : id, 
+					"poids" : $('#poids').val(),
+					"largeur" : $('#largeur').val(),
+					"longueur" : $('#longueur').val(),
+					"hauteur" : $('#hauteur').val()
+				},
+				success: function (response) {
+					console.log(response);
+					$('#valeur').hide();
+					sessionStorage.clear();
+					window.location = home;
+				},
+				error: function (xhr, status) { 
+					// alert("");
+				}
+			});
+		},
+		error: function (xhr, status) { 
+			alert("");
+		}
+	});
+}  
