@@ -33,7 +33,7 @@
 
 .tcz_menu li a {
     color : #fff ;
-    font-size: 16px;
+    font-size: 1.4em !important;
     display: block;
     padding: 2px 0 !important;
 }
@@ -47,7 +47,7 @@
     position:absolute;
     top:0;
     right:0;
-    font-size: 1.4em;
+    font-size: 20px;
     width: 40px;
     border: none;
     margin: 0 0 5px 0px;
