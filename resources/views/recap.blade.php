@@ -66,7 +66,6 @@
 			
 			<!--<center><button class="btn btn-success" id="terminus" style="font-size: 35px;">OK</button></center>-->
 			<center><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="choiceForShip">Valider</button></center>
-
 			</div>
 		</div> 
 		<div id="modal">
@@ -116,5 +115,4 @@
 			}
 		</script>
 	</body> 
-</html> 
-   
+</html>
