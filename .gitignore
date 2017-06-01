@@ -1,5 +1,6 @@
 .htaccess
 *.old
+config.js
 public/js/config.js
 public/css/*header.*
 public/js/*header.*
